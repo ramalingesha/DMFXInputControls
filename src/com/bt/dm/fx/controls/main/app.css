@@ -1,0 +1,17 @@
+.text-field {
+}
+.choice-box {
+    -fx-pref-width: 220;
+}
+
+.choice-box .context-menu {
+    -fx-pref-width: 220; /* Your width for the context menu background shown */
+}
+
+.table-row-cell:empty {
+    -fx-background-color: lightyellow;
+}
+ 
+.table-row-cell:empty .table-cell {
+    -fx-border-width: 0px;
+}
