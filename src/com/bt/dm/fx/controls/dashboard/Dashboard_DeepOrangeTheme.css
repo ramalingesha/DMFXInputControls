@@ -1,0 +1,20 @@
+.dashboard-title-bar {
+	-fx-background-color: #c41c00;
+}
+.dashboard-title-bar .label {
+	-fx-text-fill: #fafafa;
+}
+.dashboard-title-bar .icon-style {
+	-fx-fill: #fafafa;
+}
+.dashboard-title-bar .choice-box {
+	-fx-text-fill: #232323;
+}
+.dashboard-title-bar .choice-box .context-menu .label {
+	-fx-text-fill: #232323;
+}
+.dm-card {
+	-fx-background-color:
+        radial-gradient(center 50% 0%, radius 100%, rgba(255,255,255,0), rgba(255, 112, 67,0.3));
+    -fx-effect: dropshadow(three-pass-box, #FF5722, 10, 0, 8, 8);
+}

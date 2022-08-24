@@ -1,0 +1,20 @@
+.check-box:selected .box,
+.radio-button:selected .dot {
+	-fx-background-color: #0069c0;
+}
+
+.styled-primary-button {
+	-fx-background-color: #0069c0;
+}
+
+.styled-accent-button {
+	-fx-background-color: #94af76;
+}
+
+.styled-accent-button {
+	-fx-text-fill: #9f0000;
+}
+
+.styled-accent-button .dm-icon {
+	-fx-fill: #9f0000;
+}

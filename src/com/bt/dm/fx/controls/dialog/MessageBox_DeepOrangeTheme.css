@@ -1,0 +1,15 @@
+.dm-message-box .title-bar {
+	-fx-background-color: #c41c00;
+}
+.dm-message-box .title-bar .label {
+	-fx-text-fill: #fafafa;
+}
+.dm-message-box .close-icon {
+	-fx-fill: #fafafa;
+}
+.dm-message-box .message-box {
+	-fx-border-color: #c41c00;
+}
+.dm-message-box .button-bar > .container {
+	-fx-border-color: #e2e2e2 #c41c00 #c41c00 #c41c00;
+}

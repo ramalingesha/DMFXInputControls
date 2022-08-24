@@ -3,62 +3,164 @@
  */
 package com.bt.dm.fx.controls.table;
 
-import javafx.scene.control.TableCell;
+import java.text.NumberFormat;
+
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.paint.Color;
-import javafx.util.Callback;
+
+import com.bt.dm.core.i18n.DMMessageLocalizer;
+import com.bt.dm.core.type.TextFormatTypeEnum;
+import com.bt.dm.fx.controls.table.event.TableCellValueUpdateEvent;
+import com.bt.dm.fx.controls.table.renderer.AmountCellRenderer;
+import com.bt.dm.fx.controls.table.renderer.EnglishFontCellRenderer;
+import com.bt.dm.fx.controls.table.renderer.NumberCellRenderer;
+import com.bt.dm.fx.controls.table.renderer.QuantityCellRenderer;
+import com.bt.dm.fx.controls.table.renderer.TextFieldCellRenderer;
 
 /**
  * @author Ramalingesha ML
  *
  *         Created on Oct 10, 2020 8:10:00 PM
  */
-public class FXTableColumnModel<S extends TableModel, T extends Object> extends
-		TableColumn<S, T> {
+public class FXTableColumnModel<T, V extends Object> extends TableColumn<T, V> {
 	private String header;
 	private String propertyName;
+	private TextFormatTypeEnum textFormatType;
+	private boolean readFromLocale;
+	private boolean englishFont;
+	private boolean nudiFont;
+	private Double colWidthPercentage;
+	private String className;
 
 	public FXTableColumnModel(String header, String propertyName) {
 		this(header, propertyName, null);
 	}
 
 	public FXTableColumnModel(String header, String propertyName,
-			Double colWidthPercentage) {
-		this.header = header;
-		this.propertyName = propertyName;
-		this.createComponent();
+			boolean englishFont) {
+		this(header, propertyName, englishFont, null);
 	}
 
-	private void createComponent() {
-		this.setText(this.header);
-		this.setCellValueFactory(new PropertyValueFactory<S, T>(propertyName));
-//		this.setCellFactory(new Callback<TableColumn<S, T>, TableCell<S, T>>() {
-//
-//			@Override
-//			public TableCell<S, T> call(TableColumn<S, T> column) {
-//				return new TableCell<S, T>() {
-//					@Override
-//					protected void updateItem(T item, boolean empty) {
-//						super.updateItem(item, empty);
-//
-//						if (!empty) {
-//							System.out.println(item);
-//							// setFont(Fonts.getInstance().getEnglishFont());
-//							setItem(item);
-//							setTextFill(Color.BLUE);
-//							setStyle("-fx-background-color: red;");
-//						}
-//					}
-//				};
-//			}
-//		});
-		// this.setCellFactory((column) -> {
-		// TableCell<S, T> cell = new TableCell<S, T>(){
-		//
-		// };
-		//
-		// return cell;
-		// });
+	public FXTableColumnModel(boolean nudiFont, String header,
+			String propertyName) {
+		this(header, propertyName, null, true, false, nudiFont, null);
+	}
+
+	public FXTableColumnModel(String header, String propertyName,
+			TextFormatTypeEnum textFormatType) {
+		this(header, propertyName, textFormatType, true, false, false, null);
+	}
+
+	public FXTableColumnModel(String header, String propertyName,
+			TextFormatTypeEnum textFormatType, String className) {
+		this(header, propertyName, textFormatType, true, false, false,
+				className);
+	}
+
+	public FXTableColumnModel(String header, String propertyName,
+			boolean englishFont, TextFormatTypeEnum textFormatType) {
+		this(header, propertyName, textFormatType, true, englishFont, false,
+				null);
+	}
+
+	public FXTableColumnModel(String header, String propertyName,
+			TextFormatTypeEnum textFormatType, boolean readFromLocale,
+			boolean englishFont, boolean nudiFont) {
+		this(header, propertyName, textFormatType, readFromLocale, englishFont,
+				nudiFont, null);
+	}
+
+	public FXTableColumnModel(String header, String propertyName,
+			TextFormatTypeEnum textFormatType, boolean readFromLocale,
+			boolean englishFont, boolean nudiFont, String className) {
+		this.header = header;
+		this.propertyName = propertyName;
+		this.textFormatType = textFormatType;
+		this.readFromLocale = readFromLocale;
+		this.englishFont = englishFont;
+		this.nudiFont = nudiFont;
+		this.className = className;
+		this.initColumn();
+	}
+
+	private void initColumn() {
+		if (this.header != null) {
+			this.setText(this.readFromLocale ? DMMessageLocalizer
+					.getLabel(this.header) : this.header);
+		}
+
+		if (propertyName != null) {
+			this.setId(propertyName);
+		}
+
+		this.setCellValueFactory(new PropertyValueFactory<T, V>(propertyName));
+
+		if (this.englishFont) {
+			this.getStyleClass().add("english-font");
+		} else if (this.nudiFont) {
+			this.getStyleClass().add("nudi-font");
+		}
+
+		if (className != null) {
+			this.getStyleClass().addAll(className.split(","));
+		}
+
+		if (textFormatType == null) {
+			return;
+		}
+
+		// Apply text format
+		switch (textFormatType) {
+		case AMOUNT:
+			this.setCellFactory(column -> new AmountCellRenderer<T, V>());
+			break;
+		case QUANTITY:
+			this.setCellFactory(column -> new QuantityCellRenderer<T, V>());
+			break;
+		case ENGLISH:
+			this.setCellFactory(column -> new EnglishFontCellRenderer<T, V>());
+			break;
+		case TEXT_INPUT:
+			this.setCellFactory(column -> new TextFieldCellRenderer<T, V>(
+					new TableCellValueUpdateEvent() {
+
+						@Override
+						public void onCellValueUpdate(int selectedRowIndex,
+								String value) {
+							System.out.println(value);
+						}
+					}));
+			break;
+
+		default:
+			break;
+		}
+	}
+
+	public void setNumberFormat(NumberFormat numberFormat) {
+		this.setCellFactory(column -> new NumberCellRenderer<T, V>(numberFormat));
+	}
+
+	public String getPropertyName() {
+		return propertyName;
+	}
+
+	public Double getColWidthPercentage() {
+		return colWidthPercentage;
+	}
+
+	public void setColWidthPercentage(Double colWidthPercentage) {
+		this.colWidthPercentage = colWidthPercentage;
+	}
+
+	public void updateHeader(String newHeader, boolean readFromLocale) {
+		if (newHeader != null) {
+			this.setText(readFromLocale ? DMMessageLocalizer
+					.getLabel(newHeader) : newHeader);
+		}
+	}
+
+	public void setColumnWidth(double width) {
+		this.setPrefWidth(width);
 	}
 }

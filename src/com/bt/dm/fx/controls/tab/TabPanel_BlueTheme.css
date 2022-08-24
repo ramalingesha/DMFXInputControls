@@ -1,0 +1,19 @@
+.tab-header-background {
+    -fx-border-color: #f37f21;
+}
+.tab {
+    -fx-border-color: black;
+    -fx-background-color: #6ec6ff;
+    -fx-text-fill: #232323;
+}
+.tab .tab-label {
+	-fx-text-fill: #232323;
+}
+.tab:selected {
+	-fx-background-color: #0069c0;
+	-fx-text-fill: #fafafa;
+	-fx-border-color: transparent;
+}
+.tab:selected .tab-label {
+	-fx-text-fill: #fafafa;
+}

@@ -3,11 +3,12 @@
  */
 package com.bt.dm.fx.controls.labels;
 
-import com.bt.dm.fx.controls.events.IconClickEvent;
-
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.Cursor;
+
+import com.bt.dm.fx.controls.events.IconClickEvent;
+
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 
@@ -21,6 +22,7 @@ public class FXFontAwesomeIcon extends FontAwesomeIconView {
 		private FontAwesomeIcon icon;
 		private String size = "2em";
 		private IconClickEvent faIconClickEvent;
+		private String className;
 
 		public FXFontAwesomeIconBuilder(FontAwesomeIcon icon) {
 			this.icon = icon;
@@ -36,6 +38,11 @@ public class FXFontAwesomeIcon extends FontAwesomeIconView {
 			this.faIconClickEvent = faIconClickEvent;
 			return this;
 		}
+
+		public FXFontAwesomeIconBuilder className(String className) {
+			this.className = className;
+			return this;
+		}
 	}
 
 	public FXFontAwesomeIcon(FXFontAwesomeIconBuilder builder) {
@@ -46,6 +53,12 @@ public class FXFontAwesomeIcon extends FontAwesomeIconView {
 	private void setDefaults(FXFontAwesomeIconBuilder builder) {
 		this.setSize(builder.size);
 		this.setCursor(Cursor.HAND);
+		this.getStyleClass().add("dm-icon");
+
+		if (builder.className != null) {
+			this.getStyleClass().add(builder.className);
+		}
+
 		this.setOnMouseClicked(new EventHandler<Event>() {
 
 			@Override

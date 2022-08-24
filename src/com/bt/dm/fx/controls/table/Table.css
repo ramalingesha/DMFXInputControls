@@ -1,0 +1,30 @@
+.table-view {
+	-fx-table-cell-border-color: transparent;
+	-fx-background-insets: 0;
+  	-fx-padding: 0;
+}
+.table-view .column-header .label {
+	-fx-alignment: center-left;
+}
+.table-row-cell:empty .table-cell {
+    -fx-border-width: 0px;
+}
+
+.table-view .column-header .label,
+.table-view .table-row-cell .label {
+	-fx-padding: 2 5 2 5;
+}
+.delete-icon-cell {
+	-fx-fill: #ff1744;
+}
+
+.table-view .column-header.center-align .label {
+	-fx-alignment: CENTER;
+	-fx-border-width: 1px;
+}
+
+.table-view .column-header.center-align {
+	-fx-border-width: 0 0 1px 0;
+	-fx-border-color: #ffffff;
+	
+}

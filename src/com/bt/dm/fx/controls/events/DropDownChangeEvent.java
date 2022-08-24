@@ -3,7 +3,7 @@
  */
 package com.bt.dm.fx.controls.events;
 
-import com.bt.dmhelper.utils.model.ReferenceModel;
+import com.bt.dm.core.model.ReferenceModel;
 
 /**
  * @author Ramalingesha ML

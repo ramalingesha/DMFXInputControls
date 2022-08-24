@@ -1,0 +1,9 @@
+.select-box {
+	-fx-border-width: 1 1 1 0;
+}
+.file-path {
+	-fx-padding: 5;
+}
+.file-path .label {
+	-fx-font-size: 16;
+}

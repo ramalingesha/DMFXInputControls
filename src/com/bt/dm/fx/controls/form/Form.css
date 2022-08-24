@@ -1,0 +1,7 @@
+.dm-form {
+    -fx-padding: 15;
+}
+
+.dm-form .header {
+    -fx-padding: 0 0 20 0;
+}

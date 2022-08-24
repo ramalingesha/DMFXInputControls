@@ -1,0 +1,5 @@
+.dm-message-box .title-bar .label,
+.dm-message-box .message-box .label,
+.dm-message-box .button {
+	//-fx-font: 20px "Nudi 01 e";
+}

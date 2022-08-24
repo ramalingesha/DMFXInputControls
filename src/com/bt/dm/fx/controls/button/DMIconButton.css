@@ -1,0 +1,14 @@
+.icon-button {
+    -fx-padding: 5 20;
+    -fx-border-radius: 15;
+    -fx-background-radius: 15;
+    -fx-cursor: hand;
+}
+.icon-button .label {
+   -fx-text-fill: #fafafa;
+   -fx-padding: 0 5px;
+   -fx-font-size: 23px;
+}
+.icon-button .menu-icon {
+	-fx-fill: #fafafa;
+}

@@ -1,0 +1,35 @@
+.tab-header-background {
+    -fx-background-color:transparent;
+    -fx-border-width: 0 0 1 0;
+}
+
+.tab {
+	-fx-padding: 5 15 10 5;
+	-fx-background-insets: 0 5 5 0;
+  	-fx-border-width: 0px;
+    -fx-border-radius: 10px 5px;
+    -fx-background-radius: 10px 5px;
+    -fx-cursor: hand;
+}
+
+.tab-pane {
+	-fx-tab-max-height: 40;
+}
+
+.tab:selected {
+	-fx-padding: 5 15 13 10;
+}
+
+.tab .tab-label {
+    -fx-font-family: "Nudi 01 e";
+    -fx-font-size: 20px;
+}
+
+.tab:selected .tab-label {
+	-fx-font-family: "Nudi 01 e";
+	-fx-font-size: 25px;
+}
+
+.tab:selected .focus-indicator {
+	-fx-border-width: 0px;
+}

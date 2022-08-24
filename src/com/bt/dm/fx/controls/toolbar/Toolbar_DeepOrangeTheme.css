@@ -1,0 +1,7 @@
+.tool-bar {
+	//-fx-background-color: linear-gradient(to bottom right, #ff8a50, #ff5722);
+	-fx-background-color: transparent;
+}
+.separator {
+	-fx-background-color: #96000f;
+}

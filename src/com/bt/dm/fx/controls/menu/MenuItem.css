@@ -1,0 +1,16 @@
+.vertical-menu {
+	-fx-pref-width: 100;
+}
+.menu {
+	-fx-min-width: 100;
+}
+
+.menu-title {
+	-fx-font-family: "Nudi 01 e";
+	-fx-font-size: 24px;
+}
+
+.menu-title-two-lines {
+	-fx-font-size: 21px;
+	-fx-min-height: 68px;
+}

@@ -5,6 +5,7 @@ package com.bt.dm.fx.controls;
 
 import javafx.scene.text.Font;
 
+import com.bt.dm.fx.controls.events.DMFocusListener;
 import com.bt.dm.fx.controls.utils.ControlSize;
 
 /**
@@ -13,8 +14,9 @@ import com.bt.dm.fx.controls.utils.ControlSize;
  *         Created on Sep 23, 2020 11:02:43 AM
  */
 public abstract class DMControlBuilder implements Cloneable {
-	private boolean fixedLabelSize = true;
 	private boolean fixedControlSize = true;
+	private boolean fixedLabelSize = true;
+	private DMFocusListener focusListener;
 	private Font font;
 	private boolean hideLabel;
 	private ControlSize inputSize;
@@ -24,10 +26,18 @@ public abstract class DMControlBuilder implements Cloneable {
 	private boolean readOnly;
 	private String value;
 	private boolean verticalAlign;
+	private boolean englishFont;
+	private String[] classNames;
+	private boolean i18n = true;
 
-	@Override
-	public Object clone() throws CloneNotSupportedException {
-		return super.clone();
+	public DMControlBuilder fixedControlSize(boolean fixedControlSize) {
+		this.fixedControlSize = fixedControlSize;
+		return this;
+	}
+
+	public DMControlBuilder classNames(String[] classNames) {
+		this.classNames = classNames;
+		return this;
 	}
 
 	public DMControlBuilder fixedLabelSize(boolean fixedLabelSize) {
@@ -35,8 +45,13 @@ public abstract class DMControlBuilder implements Cloneable {
 		return this;
 	}
 
-	public DMControlBuilder fixedControlSize(boolean fixedControlSize) {
-		this.fixedControlSize = fixedControlSize;
+	public DMControlBuilder i18n(boolean i18n) {
+		this.i18n = i18n;
+		return this;
+	}
+
+	public DMControlBuilder focusListener(DMFocusListener focusListener) {
+		this.focusListener = focusListener;
 		return this;
 	}
 
@@ -45,28 +60,8 @@ public abstract class DMControlBuilder implements Cloneable {
 		return this;
 	}
 
-	public Font getFont() {
-		return font;
-	}
-
-	public ControlSize getInputSize() {
-		return inputSize;
-	}
-
-	public String getLabel() {
-		return label;
-	}
-
-	public ControlSize getLabelSize() {
-		return labelSize;
-	}
-
-	public String getPlaceHolder() {
-		return placeHolder;
-	}
-
-	public String getValue() {
-		return value;
+	public DMFocusListener getFocusListener() {
+		return focusListener;
 	}
 
 	public DMControlBuilder hideLabel(boolean hideLabel) {
@@ -74,29 +69,14 @@ public abstract class DMControlBuilder implements Cloneable {
 		return this;
 	}
 
-	public DMControlBuilder inputSize(ControlSize inputSize) {
-		this.inputSize = inputSize;
+	public DMControlBuilder englishFont(boolean englishFont) {
+		this.englishFont = englishFont;
 		return this;
 	}
 
-	public boolean isFixedLabelSize() {
-		return fixedLabelSize;
-	}
-
-	public boolean isFixedControlSize() {
-		return fixedControlSize;
-	}
-
-	public boolean isHideLabel() {
-		return hideLabel;
-	}
-
-	public boolean isReadOnly() {
-		return readOnly;
-	}
-
-	public boolean isVerticalAlign() {
-		return verticalAlign;
+	public DMControlBuilder inputSize(ControlSize inputSize) {
+		this.inputSize = inputSize;
+		return this;
 	}
 
 	public DMControlBuilder label(String label) {
@@ -127,5 +107,66 @@ public abstract class DMControlBuilder implements Cloneable {
 	public DMControlBuilder verticalAlign(boolean verticalAlign) {
 		this.verticalAlign = verticalAlign;
 		return this;
+	}
+
+	@Override
+	public Object clone() throws CloneNotSupportedException {
+		return super.clone();
+	}
+
+	public Font getFont() {
+		return font;
+	}
+
+	public ControlSize getInputSize() {
+		return inputSize;
+	}
+
+	public String getLabel() {
+		return label;
+	}
+
+	public ControlSize getLabelSize() {
+		return labelSize;
+	}
+
+	public String getPlaceHolder() {
+		return placeHolder;
+	}
+
+	public String getValue() {
+		return value;
+	}
+
+	public boolean isFixedControlSize() {
+		return fixedControlSize;
+	}
+
+	public boolean isFixedLabelSize() {
+		return fixedLabelSize;
+	}
+
+	public boolean isHideLabel() {
+		return hideLabel;
+	}
+
+	public boolean isReadOnly() {
+		return readOnly;
+	}
+
+	public boolean isVerticalAlign() {
+		return verticalAlign;
+	}
+
+	public boolean isEnglishFont() {
+		return englishFont;
+	}
+
+	public String[] getClassNames() {
+		return classNames;
+	}
+
+	public boolean isI18n() {
+		return i18n;
 	}
 }

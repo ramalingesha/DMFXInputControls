@@ -1,0 +1,6 @@
+.label, .button, .text-field, .tab .tab-label {
+	-fx-font: 18px "Nudi 01 e";
+}
+.date-picker, .date-picker .label {
+	-fx-font: 20px "Roboto";
+}

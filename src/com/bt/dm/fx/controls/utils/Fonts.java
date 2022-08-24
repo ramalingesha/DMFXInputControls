@@ -2,6 +2,8 @@ package com.bt.dm.fx.controls.utils;
 
 import java.io.InputStream;
 
+import com.bt.dm.core.i18n.AppLocale;
+
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 
@@ -12,6 +14,7 @@ public class Fonts {
 	private Font nudiFont;
 	private Font englishHeaderFont;
 	private Font nudiHeaderFont;
+	private AppLocale appLocale;
 
 	private static Fonts instance;
 
@@ -33,17 +36,26 @@ public class Fonts {
 
 	private void loadFonts() {
 		englishFont = this.loadFont("Roboto-Regular.ttf");
-		// nudiFont = new Font("Nudi 01 e", Font.PLAIN, 14);
 		nudiFont = this.loadFont("Nudi01e.ttf");
+
+		// Load noto sans regular and medium fonts
+		// these fonts will be loaded from css file
+		this.loadFont("NotoSansKannada-Light.ttf");
+		this.loadFont("NotoSansKannada-Regular.ttf");
+		this.loadFont("NotoSansKannada-Medium.ttf");
+		this.loadFont("NotoSansKannada-Medium.ttf");
+//		this.loadFont("Nudi 01 k b.ttf");
+//		this.loadFont("Nudi 01 k.ttf");
 	}
 
 	public void setLocaleFonts(AppLocale appLocale) {
+		instance.appLocale = appLocale;
 		double screenWidth = SizeHelper.SCREEN_SIZE.getWidth();
 		int baseFontSize = 12;
 		if (screenWidth >= 1600) {
 			baseFontSize = 16;
 		} else if (screenWidth >= 1360) {
-			baseFontSize = 16;
+			baseFontSize = 20;
 		} else if (screenWidth >= 1280) {
 			baseFontSize = 16;
 		} else if (screenWidth >= 1024) {
@@ -117,5 +129,9 @@ public class Fonts {
 		Font font = Font.loadFont(is, 12);
 
 		return font;
+	}
+
+	public AppLocale getAppLocale() {
+		return instance.appLocale;
 	}
 }

@@ -1,0 +1,7 @@
+.label, .button, .text-field, .tab .tab-label,
+.dm-message-box .title-bar .label {
+	-fx-font: 20px "Roboto";
+}
+.heading3 {
+	-fx-font: 26px "Roboto";
+}

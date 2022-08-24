@@ -23,6 +23,7 @@ public class FXMaterialDesignIcon extends MaterialDesignIconView {
 		private MaterialDesignIcon icon;
 		private String size = "2em";
 		private IconClickEvent iconClickEvent;
+		private String className;
 
 		public FXMaterialDesignIconBuilder(MaterialDesignIcon icon) {
 			this.icon = icon;
@@ -38,6 +39,11 @@ public class FXMaterialDesignIcon extends MaterialDesignIconView {
 			this.iconClickEvent = iconClickEvent;
 			return this;
 		}
+
+		public FXMaterialDesignIconBuilder className(String className) {
+			this.className = className;
+			return this;
+		}
 	}
 
 	public FXMaterialDesignIcon(FXMaterialDesignIconBuilder builder) {
@@ -48,6 +54,12 @@ public class FXMaterialDesignIcon extends MaterialDesignIconView {
 	private void setDefaults(FXMaterialDesignIconBuilder builder) {
 		this.setSize(builder.size);
 		this.setCursor(Cursor.HAND);
+		this.getStyleClass().add("dm-icon");
+
+		if (builder.className != null) {
+			this.getStyleClass().add(builder.className);
+		}
+
 		this.setOnMouseClicked(new EventHandler<Event>() {
 
 			@Override
@@ -57,5 +69,9 @@ public class FXMaterialDesignIcon extends MaterialDesignIconView {
 				}
 			}
 		});
+	}
+
+	public void changeIcon(MaterialDesignIcon icon) {
+		this.setIcon(icon);
 	}
 }

@@ -1,0 +1,6 @@
+.menu-icon {
+	-fx-fill: #ffffff;
+}
+.active {
+	-fx-background-color: #22cbff;
+}

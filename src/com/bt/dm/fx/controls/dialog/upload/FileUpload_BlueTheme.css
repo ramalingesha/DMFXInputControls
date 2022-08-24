@@ -1,0 +1,10 @@
+.select-box {
+	-fx-border-color: #0069c0;
+}
+.dm-icon {
+	-fx-fill: #f37f21;
+}
+.file-path {
+	-fx-border-width: 0 0 0 1;
+	-fx-border-color: #0069c0;
+}

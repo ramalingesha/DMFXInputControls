@@ -1,0 +1,27 @@
+.dashboard-title-bar .icon-style {
+	-fx-font-size: 28;
+}
+.dashboard-title-bar .choice-box {
+	-fx-background-color: transparent;
+	-fx-font-size: 20;
+	-fx-cursor: hand;
+}
+.dashboard-title-bar .choice-box .label {
+	-fx-padding: 0;
+}
+.dashboard-title-bar .choice-box .arrow {
+	-fx-background-color: transparent;
+}
+.theme-color-button {
+	-fx-padding: 0 10;
+	-fx-font-size: 15;
+ 	-fx-cursor: hand;
+}
+.side-bar.tool-bar {
+	-fx-background-color: #25364a;
+	-fx-base: #25364a;
+	-fx-padding: 0;
+}
+.dm-card {
+    -fx-padding: 15;
+}

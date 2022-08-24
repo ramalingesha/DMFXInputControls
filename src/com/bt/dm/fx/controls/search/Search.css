@@ -1,0 +1,11 @@
+.search-box .text-field {
+    -fx-background-color: white;
+    -fx-background-insets: 1;
+    -fx-background-radius: 15;
+    /*-fx-padding: -9 5 -11 0;
+    -fx-border-image-source: url("search-box.png");
+    -fx-border-image-slice: 15 15 15 22 fill;
+    -fx-border-image-width: 13 13 13 22;
+    -fx-border-image-repeat: stretch;*/
+    -fx-prompt-text-fill: grey;
+}

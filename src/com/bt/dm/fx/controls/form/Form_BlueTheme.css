@@ -1,0 +1,11 @@
+.dm-form {
+	-fx-background-color:
+        radial-gradient(center 50% 0%, radius 100%, rgba(255,255,255,0), rgba(66, 165, 245,0.3));
+    -fx-effect: dropshadow(three-pass-box, #2196F3, 10, 0, 8, 8);
+}
+.separator {
+	-fx-background-color: #f37f21;
+}
+.heading {
+	-fx-text-fill: #00c6e0;
+}
