@@ -26,29 +26,22 @@ public final class SizeHelper {
 
 	private static void computeControlSizeValues() {
 		Rectangle2D dimensions = Screen.getPrimary().getBounds();
-		// double width = dimensions.getWidth() > 1366 ? 1366 : dimensions
-		// .getWidth();
-		// double height = dimensions.getHeight() > 768 ? 768 : dimensions
-		// .getHeight();
-		double width = dimensions.getWidth();
-		double height = dimensions.getHeight();
+		double width = dimensions.getWidth() > 1366 ? 1366 : dimensions.getWidth();
+		double height = dimensions.getHeight() > 768 ? 768 : dimensions.getHeight();
+//		double width = dimensions.getWidth();
+//		double height = dimensions.getHeight();
 
 		double mainPanelWidthOffset = 104;
 		double mainPanelHeightOffset = 60;
 
 		SizeHelper.SCREEN_SIZE = new ControlSize(width, height);
-		SizeHelper.LARGE_SCREEN = dimensions.getWidth() > width;
+		SizeHelper.LARGE_SCREEN = dimensions.getWidth() >= width;
 
-		SizeHelper.LABEL_SIZE = new ControlSize(
-				SizeHelper.SCREEN_SIZE.getWidth() * 0.12, 30);
-		SizeHelper.INPUT_CONTROL_SIZE = new ControlSize(
-				SizeHelper.SCREEN_SIZE.getWidth() * 0.15, 30);
-		SizeHelper.MULTI_LINE_INPUT_CONTROL_SIZE = new ControlSize(
-				SizeHelper.SCREEN_SIZE.getWidth() * 0.15, 100);
-		SizeHelper.INPUT_CONTROL_SMALL_SIZE = new ControlSize(
-				SizeHelper.SCREEN_SIZE.getWidth() * 0.07, 30);
-		SizeHelper.MAIN_PANEL_SIZE = new ControlSize(
-				SizeHelper.SCREEN_SIZE.getWidth() - mainPanelWidthOffset,
+		SizeHelper.LABEL_SIZE = new ControlSize(SizeHelper.SCREEN_SIZE.getWidth() * 0.12, 30);
+		SizeHelper.INPUT_CONTROL_SIZE = new ControlSize(SizeHelper.SCREEN_SIZE.getWidth() * 0.15, 30);
+		SizeHelper.MULTI_LINE_INPUT_CONTROL_SIZE = new ControlSize(SizeHelper.SCREEN_SIZE.getWidth() * 0.15, 100);
+		SizeHelper.INPUT_CONTROL_SMALL_SIZE = new ControlSize(SizeHelper.SCREEN_SIZE.getWidth() * 0.07, 30);
+		SizeHelper.MAIN_PANEL_SIZE = new ControlSize(SizeHelper.SCREEN_SIZE.getWidth() - mainPanelWidthOffset,
 				SizeHelper.SCREEN_SIZE.getHeight() - mainPanelHeightOffset);
 	}
 
