@@ -28,7 +28,6 @@ public class FXTableColumnModel<T, V extends Object> extends TableColumn<T, V> {
 	private TextFormatTypeEnum textFormatType;
 	private boolean readFromLocale;
 	private boolean englishFont;
-	private boolean nudiFont;
 	private Double colWidthPercentage;
 	private String className;
 
@@ -41,25 +40,20 @@ public class FXTableColumnModel<T, V extends Object> extends TableColumn<T, V> {
 		this(header, propertyName, englishFont, null);
 	}
 
-	public FXTableColumnModel(boolean nudiFont, String header,
-			String propertyName) {
-		this(header, propertyName, null, true, false, nudiFont, null);
-	}
-
 	public FXTableColumnModel(String header, String propertyName,
 			TextFormatTypeEnum textFormatType) {
-		this(header, propertyName, textFormatType, true, false, false, null);
+		this(header, propertyName, textFormatType, true, false, null);
 	}
 
 	public FXTableColumnModel(String header, String propertyName,
 			TextFormatTypeEnum textFormatType, String className) {
-		this(header, propertyName, textFormatType, true, false, false,
+		this(header, propertyName, textFormatType, true, false,
 				className);
 	}
 
 	public FXTableColumnModel(String header, String propertyName,
 			boolean englishFont, TextFormatTypeEnum textFormatType) {
-		this(header, propertyName, textFormatType, true, englishFont, false,
+		this(header, propertyName, textFormatType, true, englishFont,
 				null);
 	}
 
@@ -67,18 +61,17 @@ public class FXTableColumnModel<T, V extends Object> extends TableColumn<T, V> {
 			TextFormatTypeEnum textFormatType, boolean readFromLocale,
 			boolean englishFont, boolean nudiFont) {
 		this(header, propertyName, textFormatType, readFromLocale, englishFont,
-				nudiFont, null);
+				null);
 	}
 
 	public FXTableColumnModel(String header, String propertyName,
 			TextFormatTypeEnum textFormatType, boolean readFromLocale,
-			boolean englishFont, boolean nudiFont, String className) {
+			boolean englishFont, String className) {
 		this.header = header;
 		this.propertyName = propertyName;
 		this.textFormatType = textFormatType;
 		this.readFromLocale = readFromLocale;
 		this.englishFont = englishFont;
-		this.nudiFont = nudiFont;
 		this.className = className;
 		this.initColumn();
 	}
@@ -97,8 +90,6 @@ public class FXTableColumnModel<T, V extends Object> extends TableColumn<T, V> {
 
 		if (this.englishFont) {
 			this.getStyleClass().add("english-font");
-		} else if (this.nudiFont) {
-			this.getStyleClass().add("nudi-font");
 		}
 
 		if (className != null) {
@@ -125,8 +116,7 @@ public class FXTableColumnModel<T, V extends Object> extends TableColumn<T, V> {
 					new TableCellValueUpdateEvent() {
 
 						@Override
-						public void onCellValueUpdate(int selectedRowIndex,
-								String value) {
+						public void onCellValueUpdate(int row, String columnId, String value) {
 							System.out.println(value);
 						}
 					}));

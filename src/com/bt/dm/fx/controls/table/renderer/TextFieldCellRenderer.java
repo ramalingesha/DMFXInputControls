@@ -38,13 +38,12 @@ public class TextFieldCellRenderer<S, V extends Object> extends TableCell<S, V> 
 						}
 					}));
 
-			textField.focusedProperty().addListener(
-					(observable, oldValue, newValue) -> {
-						if (!newValue) {
-							tableCellValueUpdateEvent.onCellValueUpdate(0,
-									textField.getText());
-						}
-					});
+			textField.focusedProperty().addListener((observable, oldValue, newValue) -> {
+				if (!newValue) {
+					tableCellValueUpdateEvent.onCellValueUpdate(this.getIndex(), this.getId(),
+							DMNumberUtils.getAmountString(textField.getText()));
+				}
+			});
 
 			this.setGraphic(textField);
 			this.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);

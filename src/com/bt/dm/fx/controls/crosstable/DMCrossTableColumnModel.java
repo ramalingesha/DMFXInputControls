@@ -8,6 +8,7 @@ import javafx.beans.property.SimpleObjectProperty;
 import com.bt.dm.core.type.TextFormatTypeEnum;
 import com.bt.dm.fx.controls.table.DMTableModel;
 import com.bt.dm.fx.controls.table.FXTableColumnModel;
+import com.bt.dm.fx.controls.table.event.TableCellValueUpdateEvent;
 
 /**
  * @author Ramalingesha ML
@@ -20,8 +21,9 @@ public class DMCrossTableColumnModel<S extends DMTableModel> extends
 		private String header;
 		private String propertyName;
 		private TextFormatTypeEnum textFormatType;
-		private boolean readFromLocale;
-		private boolean nudiFont;
+		private TableCellValueUpdateEvent tableCellValueUpdateEvent;
+		private boolean readFromLocale = true;
+		private boolean englishFont;
 		private Double colWidthPercentage;
 		private Double colWidth;
 
@@ -35,6 +37,12 @@ public class DMCrossTableColumnModel<S extends DMTableModel> extends
 			this.textFormatType = textFormatType;
 			return this;
 		}
+		
+		public DMCrossTableColumnModelBuilder tableCellValueUpdateEvent(
+				TableCellValueUpdateEvent tableCellValueUpdateEvent) {
+			this.tableCellValueUpdateEvent = tableCellValueUpdateEvent;
+			return this;
+		}
 
 		public DMCrossTableColumnModelBuilder readFromLocale(
 				boolean readFromLocale) {
@@ -42,8 +50,8 @@ public class DMCrossTableColumnModel<S extends DMTableModel> extends
 			return this;
 		}
 
-		public DMCrossTableColumnModelBuilder nudiFont(boolean nudiFont) {
-			this.nudiFont = nudiFont;
+		public DMCrossTableColumnModelBuilder englishFont(boolean englishFont) {
+			this.englishFont = englishFont;
 			return this;
 		}
 
@@ -61,7 +69,7 @@ public class DMCrossTableColumnModel<S extends DMTableModel> extends
 
 	public DMCrossTableColumnModel(DMCrossTableColumnModelBuilder builder) {
 		super(builder.header, builder.propertyName, builder.textFormatType,
-				builder.readFromLocale, !builder.nudiFont, builder.nudiFont);
+				builder.readFromLocale, builder.englishFont, false);
 		this.initColumn(builder);
 	}
 
