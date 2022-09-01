@@ -26,6 +26,7 @@ public class FXTableColumnModel<T, V extends Object> extends TableColumn<T, V> {
 	private String header;
 	private String propertyName;
 	private TextFormatTypeEnum textFormatType;
+	private TableCellValueUpdateEvent tableCellValueUpdateEvent;
 	private boolean readFromLocale;
 	private boolean englishFont;
 	private Double colWidthPercentage;
@@ -59,20 +60,20 @@ public class FXTableColumnModel<T, V extends Object> extends TableColumn<T, V> {
 
 	public FXTableColumnModel(String header, String propertyName,
 			TextFormatTypeEnum textFormatType, boolean readFromLocale,
-			boolean englishFont, boolean nudiFont) {
-		this(header, propertyName, textFormatType, readFromLocale, englishFont,
-				null);
-	}
-
-	public FXTableColumnModel(String header, String propertyName,
-			TextFormatTypeEnum textFormatType, boolean readFromLocale,
 			boolean englishFont, String className) {
+		this(header, propertyName, textFormatType, readFromLocale, englishFont, className, null);
+	}
+	
+	public FXTableColumnModel(String header, String propertyName, TextFormatTypeEnum textFormatType,
+			boolean readFromLocale, boolean englishFont, String className,
+			TableCellValueUpdateEvent tableCellValueUpdateEvent) {
 		this.header = header;
 		this.propertyName = propertyName;
 		this.textFormatType = textFormatType;
 		this.readFromLocale = readFromLocale;
 		this.englishFont = englishFont;
 		this.className = className;
+		this.tableCellValueUpdateEvent = tableCellValueUpdateEvent;
 		this.initColumn();
 	}
 
@@ -112,14 +113,15 @@ public class FXTableColumnModel<T, V extends Object> extends TableColumn<T, V> {
 			this.setCellFactory(column -> new EnglishFontCellRenderer<T, V>());
 			break;
 		case TEXT_INPUT:
-			this.setCellFactory(column -> new TextFieldCellRenderer<T, V>(
-					new TableCellValueUpdateEvent() {
+			if (this.tableCellValueUpdateEvent != null) {
+				this.setCellFactory(column -> new TextFieldCellRenderer<T, V>(new TableCellValueUpdateEvent() {
 
-						@Override
-						public void onCellValueUpdate(int row, String columnId, String value) {
-							System.out.println(value);
-						}
-					}));
+					@Override
+					public void onCellValueUpdate(int row, String columnId, String value) {
+						tableCellValueUpdateEvent.onCellValueUpdate(row, columnId, value);
+					}
+				}));
+			}
 			break;
 
 		default:

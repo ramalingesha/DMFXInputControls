@@ -68,8 +68,8 @@ public class DMCrossTableColumnModel<S extends DMTableModel> extends
 	}
 
 	public DMCrossTableColumnModel(DMCrossTableColumnModelBuilder builder) {
-		super(builder.header, builder.propertyName, builder.textFormatType,
-				builder.readFromLocale, builder.englishFont, false);
+		super(builder.header, builder.propertyName, builder.textFormatType, builder.readFromLocale, builder.englishFont,
+				null, builder.tableCellValueUpdateEvent);
 		this.initColumn(builder);
 	}
 
