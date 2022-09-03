@@ -188,7 +188,7 @@ public class DMFileUploadCmp extends Pane {
 	private Node getImportButton() {
 		FXButtonCmp importButton = new FXButtonCmp(new FXButtonCmpBuilder()
 				.text("milkProducer.form.input.import")
-				.className("styled-primary-button english-font")
+				.className("styled-accent-button english-font")
 				.materialIcon(
 						new FXMaterialDesignIcon(
 								new FXMaterialDesignIconBuilder(

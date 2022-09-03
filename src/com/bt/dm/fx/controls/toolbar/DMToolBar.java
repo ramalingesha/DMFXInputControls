@@ -120,7 +120,7 @@ public class DMToolBar extends ToolBar {
 		if (this.builder.toolBarControls != null) {
 			this.builder.toolBarControls.stream().forEach(control -> {
 				if (this.builder.addSpaceBetweenControls) {
-					this.getItems().add(UIHelper.getHorizontalSpace(1));
+					this.getItems().add(UIHelper.getEmptySpace(1, false));
 				}
 
 				this.getItems().add(control);
@@ -191,7 +191,7 @@ public class DMToolBar extends ToolBar {
 					}
 				}));
 
-		this.getItems().addAll(this.saveButton, UIHelper.getHorizontalSpace(1),
+		this.getItems().addAll(this.saveButton, UIHelper.getEmptySpace(1, false),
 				this.cancelButton);
 	}
 }

@@ -41,9 +41,14 @@ public class UIHelper {
 	public static final ButtonType ALERT_CANCEL_BUTTON = new ButtonType(
 			"Cancel", ButtonData.CANCEL_CLOSE);
 
-	public static Region getHorizontalSpace(double width) {
+	public static Region getEmptySpace(double size, boolean vertical) {
 		Region spacer = new Region();
-		spacer.setPrefWidth(width);
+
+		if (vertical) {
+			spacer.setPrefHeight(size);
+		} else {
+			spacer.setPrefWidth(size);
+		}
 
 		return spacer;
 	}
