@@ -51,6 +51,10 @@ public abstract class DMControl<T> extends Pane {
 	public void setLabelSize(ControlSize size) {
 		this.labelCmp.setPrefSize(size.getWidth(), size.getHeight());
 	}
+	
+	public void hide(boolean visible) {
+		this.setVisible(visible);
+	}
 
 	protected Pane constructControlWithDefaults(Control inputControl) {
 		Pane pane;

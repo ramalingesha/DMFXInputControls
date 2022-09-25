@@ -18,6 +18,7 @@ import com.bt.dm.core.pubsub.PubSubEvent;
 import com.bt.dm.core.pubsub.PubSubEventDataModel;
 import com.bt.dm.core.pubsub.PubSubEventHandler;
 import com.bt.dm.core.utils.ConstantUtils;
+import com.bt.dm.core.utils.DMCollectionUtils;
 import com.bt.dm.core.utils.RandomNumberGenerator;
 import com.bt.dm.fx.controls.DMControl;
 import com.bt.dm.fx.controls.DMControlBuilder;
@@ -135,6 +136,20 @@ public class FXComboBoxCmp extends DMControl<ReferenceModel> {
 			this.comboBox.getSelectionModel().selectFirst();
 		}
 	}
+	
+	public void setValue(int id) {
+		if (DMCollectionUtils.notEmptyOrNull(itemsList)) {
+			int index = 0;
+			for (ReferenceModel refModel : itemsList) {
+				if (refModel.getId().compareTo(id) == 0) {
+					this.comboBox.getSelectionModel().select(index);
+					break;
+				}
+
+				index++;
+			}
+		}
+	}
 
 	private ObservableList<String> getItemsDisplayNames(
 			List<ReferenceModel> items) {
@@ -204,6 +219,10 @@ public class FXComboBoxCmp extends DMControl<ReferenceModel> {
 
 	public List<ReferenceModel> getItemRefModels() {
 		return this.itemsList;
+	}
+	
+	public void setEditable(boolean disable) {
+		this.comboBox.setDisable(disable);
 	}
 
 	private void addRootThemeStyleSheet() {
