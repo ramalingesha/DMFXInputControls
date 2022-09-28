@@ -29,10 +29,10 @@ import javafx.scene.layout.VBox;
  */
 public class DMSearchInputPanel extends VBox {
 	public static class DMSearchInputPanelBuilder {
-		private boolean showDateRangeSearch;
+		private boolean showDateRangeSearch = true;
 		private boolean showDateSearch;
-		private boolean showShiftSearch;
-		private boolean showCattleTypeSearch;
+		private boolean showShiftSearch = true;
+		private boolean showCattleTypeSearch = true;
 		
 		public DMSearchInputPanelBuilder showDateRangeSearch(boolean showDateRangeSearch) {
 			this.showDateRangeSearch = showDateRangeSearch;
@@ -99,6 +99,7 @@ public class DMSearchInputPanel extends VBox {
 			gridPane.add(cattleTypeSearchCmp, column++, row);
 		}
 		
+		this.setSpacing(20);
 		this.getChildren().add(gridPane);
 	}
 	

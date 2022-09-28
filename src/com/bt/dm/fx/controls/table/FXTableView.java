@@ -28,6 +28,8 @@ import com.bt.dm.core.utils.DMCollectionUtils;
 import com.bt.dm.fx.controls.DMLabelBuilder;
 import com.bt.dm.fx.controls.dialog.FXMessageBox;
 import com.bt.dm.fx.controls.dialog.FXMessageBox.FXMessageBoxBuilder;
+import com.bt.dm.fx.controls.dialog.search.DMSearchDialogCmp;
+import com.bt.dm.fx.controls.dialog.search.DMSearchDialogInputHandler;
 import com.bt.dm.fx.controls.events.IconClickEvent;
 import com.bt.dm.fx.controls.labels.FXFontAwesomeIcon;
 import com.bt.dm.fx.controls.labels.FXFontAwesomeIcon.FXFontAwesomeIconBuilder;
@@ -72,6 +74,7 @@ public class FXTableView<S extends DMTableModel> extends Pane {
 		private Double checkBoxColumnWidth;
 		private Double editIconColumnWidth;
 		private Double deleteIconColumnWidth;
+		private DMSearchDialogInputHandler searchDialogInputHandler;
 
 		public FXTableViewBuilder(
 				ObservableList<FxTableColumnSizeMapper<S>> columnSizeMapperList) {
@@ -181,6 +184,12 @@ public class FXTableView<S extends DMTableModel> extends Pane {
 		public FXTableViewBuilder<S> editIconColumnWidth(
 				Double editIconColumnWidth) {
 			this.editIconColumnWidth = editIconColumnWidth;
+			return this;
+		}
+		
+		public FXTableViewBuilder<S> searchDialogInputHandler(
+				DMSearchDialogInputHandler searchDialogInputHandler) {
+			this.searchDialogInputHandler = searchDialogInputHandler;
 			return this;
 		}
 	}
@@ -306,6 +315,12 @@ public class FXTableView<S extends DMTableModel> extends Pane {
 			box.getChildren().addAll(builder.tableHeaderControls);
 		}
 
+		if (builder.searchDialogInputHandler != null) {
+			DMSearchDialogCmp searchDialogCmp = new DMSearchDialogCmp(builder.searchDialogInputHandler, true);
+
+			box.getChildren().addAll(searchDialogCmp);
+		}
+		
 		if (builder.enableSearch) {
 			DMSearchCmp searchCmp = new DMSearchCmp();
 			box.getChildren().add(searchCmp);
@@ -329,7 +344,7 @@ public class FXTableView<S extends DMTableModel> extends Pane {
 
 			box.getChildren().addAll(pdfIconButton);
 		}
-
+		
 		if (builder.miniTable) {
 			FXFontAwesomeIcon maximizeWindowIcon = new FXFontAwesomeIcon(
 					new FXFontAwesomeIconBuilder(FontAwesomeIcon.EXTERNAL_LINK)

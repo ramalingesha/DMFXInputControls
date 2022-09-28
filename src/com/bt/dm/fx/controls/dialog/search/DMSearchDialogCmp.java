@@ -30,28 +30,43 @@ import javafx.scene.layout.VBox;
  */
 public class DMSearchDialogCmp extends VBox {
 	private DMSearchDialogInputHandler searchDialogInputHandler;
+	private boolean showIcon;
 	private ModalWindowPubSubTopicModel popupSettingModel;
 
 	public DMSearchDialogCmp(DMSearchDialogInputHandler searchDialogInputHandler) {
+		this(searchDialogInputHandler, false);
+	}
+	
+	public DMSearchDialogCmp(DMSearchDialogInputHandler searchDialogInputHandler, boolean showIcon) {
 		this.searchDialogInputHandler = searchDialogInputHandler;
+		this.showIcon = showIcon;
 		this.initSearchDialogSettings();
 	}
 
 	private void createButton() {
-		FXButtonCmp searchButton = new FXButtonCmp(new FXButtonCmpBuilder()
-				.text(searchDialogInputHandler.getSearchButtonText())
-				.materialIcon(new FXMaterialDesignIcon(
-						new FXMaterialDesignIconBuilder(MaterialDesignIcon.FILTER)))
-				.className("styled-accent-button")
-				.eventHandler(event -> {
-					this.showSearchDialog();
-				}));
-		
-		
-		Region spacer = UIHelper.getEmptySpace(10, true);
-		VBox.setVgrow(spacer, Priority.ALWAYS);
-		
-		this.getChildren().addAll(spacer, searchButton);
+		if(this.showIcon) {
+			FXFontAwesomeIcon searchIconButton = new FXFontAwesomeIcon(
+					new FXFontAwesomeIconBuilder(FontAwesomeIcon.SEARCH)
+							.size("28px")
+							.faIconClickEvent(event -> {
+								this.showSearchDialog();
+							}));
+			
+			this.getChildren().add(searchIconButton);			
+		} else {
+			Region spacer = UIHelper.getEmptySpace(10, true);
+			VBox.setVgrow(spacer, Priority.ALWAYS);
+			
+			FXButtonCmp searchButton = new FXButtonCmp(new FXButtonCmpBuilder()
+					.text(searchDialogInputHandler.getSearchButtonText())
+					.materialIcon(new FXMaterialDesignIcon(
+							new FXMaterialDesignIconBuilder(MaterialDesignIcon.FILTER)))
+					.className("styled-accent-button")
+					.eventHandler(event -> {
+						this.showSearchDialog();
+					}));
+			this.getChildren().addAll(spacer, searchButton);
+		}
 	}
 	
 	private void showSearchDialog() {
