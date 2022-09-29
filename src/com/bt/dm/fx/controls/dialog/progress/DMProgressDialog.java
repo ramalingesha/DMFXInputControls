@@ -59,7 +59,7 @@ public class DMProgressDialog {
 				loadingMessageLbl);
 
 		modelData = new ModalWindowPubSubTopicModel(null, contentPanel, 500d,
-				100d);
+				200d);
 	}
 
 	private void initLoadingSpinner() {

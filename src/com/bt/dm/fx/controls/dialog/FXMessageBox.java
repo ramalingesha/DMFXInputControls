@@ -51,6 +51,7 @@ public class FXMessageBox {
 		private boolean titleI18N = true;
 		private boolean messageI18N = true;
 		private boolean messageEnglishFont;
+		private Double messagePanelHeight;
 
 		public FXMessageBoxBuilder(String message) {
 			this.message = message;
@@ -68,6 +69,11 @@ public class FXMessageBox {
 
 		public FXMessageBoxBuilder title(String title) {
 			this.title = title;
+			return this;
+		}
+		
+		public FXMessageBoxBuilder messagePanelHeight(Double messagePanelHeight) {
+			this.messagePanelHeight = messagePanelHeight;
 			return this;
 		}
 
@@ -103,6 +109,7 @@ public class FXMessageBox {
 		this.dialog.setMessageBoxTitle(builder.title, builder.titleI18N);
 		this.dialog.changeAlertIcon(builder.alertType);
 		this.dialog.setEnglishFont(builder.messageEnglishFont);
+		this.dialog.setMessagePanelHeight(builder.messagePanelHeight);
 
 		return FXMessageDialog.getInstance().showAndWait();
 	}
@@ -124,6 +131,14 @@ class FXMessageDialog extends Dialog<ButtonType> {
 	public void setMessage(String message, boolean i18n) {
 		this.message.setValue(i18n ? DMMessageLocalizer.getLabel(message)
 				: message);
+	}
+	
+	public void setMessagePanelHeight(Double height) {
+		if (height != null) {
+			this.messageCmp.setPrefHeight(height);
+		} else {
+			this.messageCmp.setPrefHeight(40);
+		}
 	}
 
 	public void setMessageBoxTitle(String messageBoxTitle, boolean i18n) {

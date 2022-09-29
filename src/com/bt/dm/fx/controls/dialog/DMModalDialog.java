@@ -45,7 +45,6 @@ public class DMModalDialog {
 		private String title;
 		private Double width;
 		private Double height;
-		private boolean showTitleBar = true;
 
 		public DMModelDialogBuilder(Window parent) {
 			this.parent = parent;
@@ -70,11 +69,6 @@ public class DMModalDialog {
 			this.contentPane = contentPane;
 			return this;
 		}
-
-		public DMModelDialogBuilder showTitleBar(boolean showTitleBar) {
-			this.showTitleBar = showTitleBar;
-			return this;
-		}
 	}
 
 	private Stage stage;
@@ -83,6 +77,7 @@ public class DMModalDialog {
 	private PubSubEventHandler handler;
 	private BorderPane root;
 	private FXLabelCmp titleCmp;
+	private Pane titleBarPanel;
 
 	public DMModalDialog(DMModelDialogBuilder builder) {
 		this.builder = builder;
@@ -101,14 +96,13 @@ public class DMModalDialog {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
+		titleBarPanel = this.getTitleBar();
 
 		root = new BorderPane();
 		root.setPadding(new Insets(0));
 		root.setCenter(this.contentPanel);
-
-		if (this.builder.showTitleBar) {
-			root.setTop(this.getTitleBar());
-		}
+		root.setTop(titleBarPanel);
 
 		// Creating a scene object
 		Scene scene = new Scene(root);
@@ -230,6 +224,10 @@ public class DMModalDialog {
 
 	public void setTitle(String title) {
 		this.titleCmp.setText(DMStringUtils.getNutralValue(title));
+	}
+	
+	public void showTitleBar(boolean show) {
+		this.titleBarPanel.setVisible(show);
 	}
 
 	public void reloadContent(Pane contentPane) {
