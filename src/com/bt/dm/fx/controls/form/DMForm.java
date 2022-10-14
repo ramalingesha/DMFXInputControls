@@ -30,12 +30,18 @@ import com.bt.dm.fx.controls.DMControl;
 import com.bt.dm.fx.controls.DMLabelBuilder;
 import com.bt.dm.fx.controls.dialog.FXMessageBox;
 import com.bt.dm.fx.controls.dialog.FXMessageBox.FXMessageBoxBuilder;
+import com.bt.dm.fx.controls.dialog.setting.DMSettingDialogCmp;
+import com.bt.dm.fx.controls.dialog.setting.DMSettingDialogInputHandler;
 import com.bt.dm.fx.controls.input.FXDualTextInputCmp;
+import com.bt.dm.fx.controls.labels.FXFontAwesomeIcon;
 import com.bt.dm.fx.controls.labels.FXLabelCmp;
+import com.bt.dm.fx.controls.labels.FXFontAwesomeIcon.FXFontAwesomeIconBuilder;
 import com.bt.dm.fx.controls.theme.ControlsTheme;
 import com.bt.dm.fx.controls.toolbar.DMToolBar;
 import com.bt.dm.fx.controls.toolbar.DMToolBar.DMToolBarBuilder;
 import com.bt.dm.fx.controls.utils.UIHelper;
+
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 
 /**
  * @author Ramalingesha ML
@@ -46,6 +52,7 @@ public class DMForm extends Pane {
 
 	public static class DMFormBuilder {
 		private String formHeader;
+		private DMSettingDialogInputHandler settingDialogInputHandler;
 		private Pane formInputsPanel;
 		private DMToolBarBuilder toolBarBuilder;
 		private ObservableList<Node> formHeaderControls;
@@ -58,6 +65,11 @@ public class DMForm extends Pane {
 
 		public DMFormBuilder formHeader(String formHeader) {
 			this.formHeader = formHeader;
+			return this;
+		}
+		
+		public DMFormBuilder settingDialogInputHandler(DMSettingDialogInputHandler settingDialogInputHandler) {
+			this.settingDialogInputHandler = settingDialogInputHandler;
 			return this;
 		}
 
@@ -146,9 +158,19 @@ public class DMForm extends Pane {
 
 		FXLabelCmp header = new FXLabelCmp(new DMLabelBuilder().label(
 				formHeader).classNames(new String[] { "heading1" }));
-		BorderPane.setAlignment(header, Pos.CENTER);
-		headerPane.setLeft(header);
-
+		
+		HBox headerItemsPanel = new HBox(20);
+		headerItemsPanel.getChildren().add(header);
+		
+		if(this.builder.settingDialogInputHandler != null) {
+			DMSettingDialogCmp settingDialogCmp = new DMSettingDialogCmp(this.builder.settingDialogInputHandler);
+			
+			headerItemsPanel.getChildren().add(settingDialogCmp);
+		}
+		
+		BorderPane.setAlignment(headerItemsPanel, Pos.CENTER);
+		headerPane.setLeft(headerItemsPanel);
+		
 		if (this.builder.formHeaderControls != null) {
 			HBox box = new HBox();
 			box.setAlignment(Pos.CENTER);

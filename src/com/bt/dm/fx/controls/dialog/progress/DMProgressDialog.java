@@ -7,6 +7,7 @@ import javafx.geometry.Pos;
 import javafx.scene.control.ProgressIndicator;
 import javafx.scene.layout.HBox;
 
+import com.bt.dm.core.exception.PubSubErrorDataModel;
 import com.bt.dm.core.pubsub.ModalWindowPubSubTopicModel;
 import com.bt.dm.core.pubsub.PubSubEvent;
 import com.bt.dm.fx.controls.DMLabelBuilder;
@@ -44,6 +45,11 @@ public class DMProgressDialog {
 		this.service = new SpinnerService(dmTaskProgressEvent);
 		this.service.setOnSucceeded(event -> {
 			dmTaskProgressEvent.successCallback();
+			this.stopLoadingSpinner();
+		});
+		
+		this.service.setOnFailed(event -> {
+			PubSubEvent.getInstance().publish("showAppError", new PubSubErrorDataModel(this.service.getException()));
 			this.stopLoadingSpinner();
 		});
 

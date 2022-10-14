@@ -5,6 +5,7 @@ package com.bt.dm.fx.controls.dialog.search;
 
 import java.util.stream.Collectors;
 
+import com.bt.dm.core.model.DMSearchInputModel;
 import com.bt.dm.core.model.ReferenceModel;
 import com.bt.dm.core.service.data.CattleTypeConstants;
 import com.bt.dm.core.service.data.CattleTypeMasterService;

@@ -53,7 +53,7 @@ public abstract class DMControl<T> extends Pane {
 	}
 	
 	public void hide(boolean visible) {
-		this.setVisible(visible);
+		this.setVisible(!visible);
 	}
 
 	protected Pane constructControlWithDefaults(Control inputControl) {

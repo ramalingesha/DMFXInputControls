@@ -6,13 +6,6 @@ package com.bt.dm.fx.controls.input;
 import java.util.ArrayList;
 import java.util.List;
 
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Control;
-
 import com.bt.dm.core.model.ReferenceModel;
 import com.bt.dm.core.pubsub.PubSubEvent;
 import com.bt.dm.core.pubsub.PubSubEventDataModel;
@@ -24,6 +17,13 @@ import com.bt.dm.fx.controls.DMControl;
 import com.bt.dm.fx.controls.DMControlBuilder;
 import com.bt.dm.fx.controls.events.DropDownChangeEvent;
 import com.bt.dm.fx.controls.theme.ControlsTheme;
+
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.Control;
 
 /**
  * @author Ramalingesha ML
@@ -221,8 +221,17 @@ public class FXComboBoxCmp extends DMControl<ReferenceModel> {
 		return this.itemsList;
 	}
 	
-	public void setEditable(boolean disable) {
-		this.comboBox.setDisable(disable);
+	public void removeItem(ReferenceModel refModel) {
+		if (DMCollectionUtils.isEmptyOrNull(this.itemsList) || refModel == null) {
+			return;
+		}
+
+		this.itemsList.remove(refModel);
+		this.comboBox.getItems().remove(refModel.getValue());
+	}
+	
+	public void setEditable(boolean editable) {
+		this.comboBox.setDisable(!editable);
 	}
 
 	private void addRootThemeStyleSheet() {
