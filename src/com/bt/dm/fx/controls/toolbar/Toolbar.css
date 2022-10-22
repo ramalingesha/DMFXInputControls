@@ -1,2 +1,9 @@
-.tool-bar {
+.tool-bar .menu-button,
+.tool-bar .menu-bar {
+	-fx-background-color: transparent;
+	-fx-padding: 0;
+}
+
+.tool-bar .menu-button .dm-icon {
+	-fx-fill: #ffffff;
 }

@@ -6,11 +6,13 @@
 	-fx-background-color: #002984;
 }
 
-.styled-accent-button {
+.styled-accent-button,
+.styled-accent-menu .menu-button {
 	-fx-background-color: #4a51b5;
 }
 
-.styled-accent-button {
+.styled-accent-button,
+.styled-accent-menu .menu-button .label {
 	-fx-text-fill: #fafafa;
 }
 

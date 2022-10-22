@@ -5,6 +5,10 @@
 	-fx-min-width: 100;
 }
 
+.small .menu {
+	-fx-min-width: 30;
+}
+
 .menu-title {
 	-fx-font-family: "Nudi 01 e";
 	-fx-font-size: 24px;

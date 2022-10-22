@@ -27,7 +27,8 @@
     -fx-min-width: 150;
 }
 
-.styled-primary-button, .styled-secondary-button, .styled-button, .styled-accent-button {
+.styled-primary-button, .styled-secondary-button, .styled-button, .styled-accent-button,
+.menu-button, .menu-button .label {
 	-fx-padding: 2 8;
 	-fx-border-radius: 8;
 	-fx-background-radius: 8;
@@ -46,11 +47,6 @@
 
 .styled-button, .styled-accent-button {
 	-fx-text-fill: #232323;
-}
-
-.styled-secondary-button:hover {
-//	-fx-background-color: -fx-shadow-highlight-color, -fx-outer-border, -fx-inner-border, -fx-body-color;
-//	-fx-border-color: red;
 }
 
 .styled-primary-button:focused, .styled-secondary-button:focused {
@@ -76,4 +72,17 @@
 	-fx-border-width: 3;
 	-fx-border-radius: 15;
 	-fx-padding: 0 15 0 15;
+}
+
+.menu-bar {
+	-fx-padding: 0;
+}
+
+.menu-button,
+.menu-item {
+	-fx-cursor: hand;
+}
+
+.styled-accent-menu .menu-item {
+	-fx-background-color: #728ba2;
 }
