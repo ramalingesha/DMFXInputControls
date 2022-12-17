@@ -1,0 +1,35 @@
+.check-box:selected .box,
+.radio-button:selected .dot {
+	-fx-background-color: #bb86fc;
+}
+.styled-primary-button {
+	-fx-background-color: #82e9de;
+}
+
+.styled-primary-button, .menu-button .label {
+	-fx-text-fill: #232323;
+}
+
+.styled-primary-button .dm-icon {
+	-fx-fill: #232323;
+}
+
+.styled-accent-button,
+.styled-accent-menu .menu-button {
+	-fx-background-color: #4db6ac;
+}
+
+.styled-accent-button,
+.styled-accent-menu .menu-button .label {
+	-fx-text-fill: #232323;
+}
+
+.styled-accent-button .dm-icon {
+	-fx-fill: #232323;
+}
+.combo-box .list-cell,
+.choice-box .label, .choice-box .context-menu .label {
+    -fx-background: white;
+    -fx-background-color: transparent;
+    -fx-text-fill: -fx-text-base-color;
+}

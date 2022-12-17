@@ -1,0 +1,15 @@
+.tab-header-background {
+    -fx-border-color: #1fe3e3;
+}
+.tab {
+    -fx-background-color: #716e6e;
+}
+.tab .tab-label {
+	-fx-text-fill: #fafafa;
+}
+.tab:selected {
+	-fx-background-color: #212121;
+}
+.tab:selected .tab-label {
+	-fx-text-fill: #82e9de;
+}

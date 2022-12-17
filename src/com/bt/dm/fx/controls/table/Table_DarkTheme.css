@@ -1,0 +1,29 @@
+.dm-table-pane {
+	-fx-background-color:
+        radial-gradient(center 50% 0%, radius 100%, rgba(64,64,64,0), rgba(18, 18, 18,0.3));
+    -fx-effect: dropshadow(three-pass-box, #716e6e, 10, 0, 8, 8);
+}
+.separator {
+	-fx-background-color: #1fe3e3;
+}
+.filler {
+	-fx-background-color: #7c7a7a;
+}
+.table-view .column-header {
+   -fx-background-color: #716e6e;
+}
+.table-view .column-header .label{
+	-fx-text-fill: white;
+}
+.table-row-cell:odd {
+    -fx-background-color: #e3f2fd;
+}
+.table-row-cell:even {
+    -fx-background-color: white;
+}
+.table-row-cell:selected {
+   -fx-background-color: blue; 
+}
+.table-row-cell:empty {
+    -fx-background-color: rgba(227, 242, 253,0.3);
+}

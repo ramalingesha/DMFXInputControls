@@ -1,0 +1,14 @@
+.dashboard-title-bar {
+	-fx-background-color: #121212;
+}
+.dashboard-title-bar .label {
+	-fx-text-fill: #82e9de;
+}
+.dashboard-title-bar .icon-style {
+	-fx-fill: #fafafa;
+}
+.dm-card {
+	-fx-background-color:
+        radial-gradient(center 50% 0%, radius 100%, rgba(56,56,56,0), rgba(18, 18, 18,0.3));
+    -fx-effect: dropshadow(three-pass-box, #383838, 10, 0, 8, 8);
+}

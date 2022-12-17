@@ -156,7 +156,8 @@ public class DMTitlePanel extends DMView {
 				this.getButton(AppTheme.BLUE, "#0069c0"),
 				this.getButton(AppTheme.INDIGO, "#002984"),
 				this.getButton(AppTheme.TEAL, "#00675b"),
-				this.getButton(AppTheme.DEEP_ORANGE, "#c41c00"));
+				this.getButton(AppTheme.DEEP_ORANGE, "#c41c00"),
+				this.getButton(AppTheme.DARK, "#121212"));
 
 		return colorPickerBox;
 	}

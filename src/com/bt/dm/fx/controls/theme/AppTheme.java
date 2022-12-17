@@ -32,5 +32,11 @@ public enum AppTheme {
 		public String toString() {
 			return "DeepOrangeTheme";
 		}
+	},
+	DARK {
+		@Override
+		public String toString() {
+			return "DarkTheme";
+		}
 	}
 }

@@ -1,0 +1,9 @@
+.dm-form {
+	-fx-background-color: #404040;
+}
+.separator {
+	-fx-background-color: #1fe3e3;
+}
+.label {
+	-fx-text-fill: #fafafa;
+}
