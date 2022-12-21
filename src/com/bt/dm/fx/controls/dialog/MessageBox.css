@@ -10,3 +10,7 @@
 .english-font {
 	-fx-font: 17px "Roboto" !important;
 }
+
+.kannada-error-font {
+	-fx-font: 20px "Nudi 01 e" !important;
+}
