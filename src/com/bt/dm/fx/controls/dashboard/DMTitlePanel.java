@@ -1,29 +1,38 @@
 package com.bt.dm.fx.controls.dashboard;
 
-import javafx.event.ActionEvent;
 import javafx.event.Event;
-import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.control.Button;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import com.bt.dm.core.controller.DMCoreServiceController;
 import com.bt.dm.core.pubsub.DashboardTitlePubSubTopicModel;
 import com.bt.dm.core.pubsub.PubSubEvent;
 import com.bt.dm.core.pubsub.PubSubEventDataModel;
 import com.bt.dm.core.pubsub.PubSubEventHandler;
+import com.bt.dm.core.settings.constants.SettingTableKeys;
+import com.bt.dm.core.settings.model.SettingsModel;
 import com.bt.dm.fx.controls.events.IconClickEvent;
+import com.bt.dm.fx.controls.labels.FXFontAwesomeIcon;
+import com.bt.dm.fx.controls.labels.FXFontAwesomeIcon.FXFontAwesomeIconBuilder;
 import com.bt.dm.fx.controls.labels.FXLabelCmp;
 import com.bt.dm.fx.controls.labels.FXLabelCmp.FXLabelCmpBuilder;
 import com.bt.dm.fx.controls.labels.FXMaterialDesignIcon;
 import com.bt.dm.fx.controls.labels.FXMaterialDesignIcon.FXMaterialDesignIconBuilder;
+import com.bt.dm.fx.controls.menu.DMContextMenu;
+import com.bt.dm.fx.controls.menu.DMMenuItem;
+import com.bt.dm.fx.controls.menu.DMMenuItem.DMMenuItemBuilder;
 import com.bt.dm.fx.controls.theme.AppTheme;
 import com.bt.dm.fx.controls.theme.ControlsTheme;
 import com.bt.dm.fx.controls.theme.ThemePubSubTopicModel;
 import com.bt.dm.fx.controls.view.DMView;
 
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIcon;
 
 /**
@@ -65,9 +74,11 @@ public class DMTitlePanel extends DMView {
 	private DMTitlePanelBuilder builder;
 	private PubSubEventHandler handler;
 	private FXLabelCmp mainLabelCmp;
+	private DMCoreServiceController coreServiceController;
 
 	public DMTitlePanel(DMTitlePanelBuilder builder) {
 		this.builder = builder;
+		this.coreServiceController = new DMCoreServiceController();
 	}
 
 	@Override
@@ -149,36 +160,58 @@ public class DMTitlePanel extends DMView {
 	}
 
 	private HBox getColorPickerBox() {
+		FXFontAwesomeIcon paintBrushIcon = new FXFontAwesomeIcon(
+				new FXFontAwesomeIconBuilder(FontAwesomeIcon.PAINT_BRUSH));
+		paintBrushIcon.getStyleClass().add("menu-icon");
+		
+		DMMenuItem colorPickerMenu = new DMMenuItem(
+				new DMMenuItemBuilder("color-picker")
+				.menuTitle("app.appThemeChooser")
+				.faIcon(paintBrushIcon)
+				.verticalAlign(false));
+		
 		HBox colorPickerBox = new HBox();
 		colorPickerBox.setAlignment(Pos.CENTER);
 		colorPickerBox.setSpacing(5);
-		colorPickerBox.getChildren().addAll(
-				this.getButton(AppTheme.BLUE, "#0069c0"),
-				this.getButton(AppTheme.INDIGO, "#002984"),
-				this.getButton(AppTheme.TEAL, "#00675b"),
-				this.getButton(AppTheme.DEEP_ORANGE, "#c41c00"),
-				this.getButton(AppTheme.DARK, "#121212"));
+		colorPickerBox.getChildren().addAll(colorPickerMenu);
+		
+		List<DMMenuItem> menuItems = new ArrayList<DMMenuItem>();
+		menuItems.add(this.getThemeColorMenuItem("blue", "app.themeColor.blue", AppTheme.BLUE));
+		menuItems.add(this.getThemeColorMenuItem("indigo", "app.themeColor.indigo", AppTheme.INDIGO));
+		menuItems.add(this.getThemeColorMenuItem("teal", "app.themeColor.teal", AppTheme.TEAL));
+		menuItems.add(this.getThemeColorMenuItem("deepOrange", "app.themeColor.deepOrange", AppTheme.DEEP_ORANGE));
+		menuItems.add(this.getThemeColorMenuItem("dark", "app.themeColor.dark", AppTheme.DARK));
+		
+		DMContextMenu themeContextMenu = new DMContextMenu(menuItems);
+		
+		colorPickerBox.setOnMouseClicked(event -> {
+			themeContextMenu.show(colorPickerMenu);
+		});
 
 		return colorPickerBox;
 	}
+	
+	private DMMenuItem getThemeColorMenuItem(String menuId, String titleKey, AppTheme themeName) {
+		DMMenuItem menuItem = new DMMenuItem(new DMMenuItemBuilder(menuId)
+				.menuTitle(titleKey)
+				.classNames("english-font")
+				.menuItemClickEvent(event -> {
+					ThemePubSubTopicModel themePubSubTopicModel = new ThemePubSubTopicModel();
+					themePubSubTopicModel.setThemeName(themeName);
+					ControlsTheme.APP_THEME = themeName;
 
-	private Button getButton(AppTheme themeName, String baseColor) {
-		Button button = new Button();
-		button.getStyleClass().add("theme-color-button");
-		button.setStyle(String.format("-fx-base: %s;", baseColor));
-		ThemePubSubTopicModel themePubSubTopicModel = new ThemePubSubTopicModel();
-
-		button.setOnAction(new EventHandler<ActionEvent>() {
-
-			@Override
-			public void handle(ActionEvent arg0) {
-				themePubSubTopicModel.setThemeName(themeName);
-				ControlsTheme.APP_THEME = themeName;
-				PubSubEvent.getInstance().publish("THEME",
-						themePubSubTopicModel);
-			}
-		});
-
-		return button;
+					SettingsModel model = this.coreServiceController.getSettingModel(SettingTableKeys.APP_THEME_COLOR,
+							AppTheme.INDIGO.toString());
+					model.setValue(themeName.toString());
+					
+					this.coreServiceController.updateSetting(model);
+					
+					PubSubEvent.getInstance().publish("THEME",
+							themePubSubTopicModel);
+				}));
+		
+		menuItem.setStyle("-fx-background-color: #25364a;");
+		
+		return menuItem;
 	}
 }

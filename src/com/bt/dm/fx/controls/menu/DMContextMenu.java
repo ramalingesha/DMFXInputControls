@@ -8,8 +8,10 @@ import java.util.List;
 import javafx.geometry.Bounds;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.CustomMenuItem;
+import javafx.scene.control.Menu;
 import javafx.scene.layout.Pane;
 
+import com.bt.dm.core.i18n.DMMessageLocalizer;
 import com.bt.dm.core.utils.DMCollectionUtils;
 
 /**
@@ -34,10 +36,26 @@ public class DMContextMenu extends Pane {
 		}
 
 		this.menuItems.forEach(menuItem -> {
-			CustomMenuItem customMenuItem = new CustomMenuItem();
-			customMenuItem.setContent(menuItem);
+			List<DMMenuItem> subMenus = menuItem.getSubMenus();
+			
+			if(DMCollectionUtils.notEmptyOrNull(subMenus)) {
+				Menu menu = new Menu(DMMessageLocalizer.getLabel(menuItem.getMenuTitle()));
+				
+				subMenus.forEach(subMenu -> {
+					CustomMenuItem customMenuItem = new CustomMenuItem();
+					customMenuItem.setContent(subMenu);
+					
+					menu.getItems().add(customMenuItem);	
+				});
+				
+				this.contextMenu.getItems().add(menu);
+			} else {
+				CustomMenuItem customMenuItem = new CustomMenuItem();
+				customMenuItem.setContent(menuItem);
+				this.contextMenu.getItems().add(customMenuItem);
+			}
 
-			this.contextMenu.getItems().add(customMenuItem);
+			
 		});
 	}
 

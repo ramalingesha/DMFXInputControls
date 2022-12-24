@@ -1,5 +1,7 @@
 package com.bt.dm.fx.controls.menu;
 
+import java.util.List;
+
 import com.bt.dm.fx.controls.dashboard.DMDashboardMenuEventListener;
 import com.bt.dm.fx.controls.labels.FXFontAwesomeIcon;
 import com.bt.dm.fx.controls.labels.FXMaterialDesignIcon;
@@ -50,14 +52,22 @@ public class DMMenuItemHelper {
 	public static DMMenuItem createMenuItem(MaterialDesignIcon materialIcon,
 			FontAwesomeIcon faIcon, String titleLocaleKey, String menuId, DMDashboardMenuEventListener dashboardMenuEventListener) {
 		return createMenuItem(materialIcon, faIcon, titleLocaleKey,
-				menuId, null, dashboardMenuEventListener);
+				menuId, null, null, dashboardMenuEventListener);
+	}
+	
+	public static DMMenuItem createMenuItem(MaterialDesignIcon materialIcon, FontAwesomeIcon faIcon,
+			String titleLocaleKey, String menuId, List<DMMenuItem> subMenus,
+			DMDashboardMenuEventListener dashboardMenuEventListener) {
+		return createMenuItem(materialIcon, faIcon, titleLocaleKey, menuId, subMenus, null, dashboardMenuEventListener);
 	}
 
 	private static DMMenuItem createMenuItem(MaterialDesignIcon materialIcon,
-			FontAwesomeIcon faIcon, String titleLocaleKey, String menuId,
+			FontAwesomeIcon faIcon, String titleLocaleKey, String menuId, List<DMMenuItem> subMenus,
 			String classNames, DMDashboardMenuEventListener dashboardMenuEventListener) {
 		DMMenuItemBuilder builder = createMenuItemBuilder(materialIcon,
-				faIcon, titleLocaleKey, false, classNames);
+				faIcon, titleLocaleKey, false, classNames)
+				.subMenus(subMenus);
+		
 		builder.menuItemClickEvent(event -> {
 			dashboardMenuEventListener.onMenuClick(menuId);
 		});

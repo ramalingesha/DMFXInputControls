@@ -17,6 +17,10 @@
 	-fx-font-size: 15;
  	-fx-cursor: hand;
 }
+
+.theme-color-button .menu-icon {
+	-fx-fill: #fafafa;	
+}
 .side-bar.tool-bar {
 	-fx-background-color: #25364a;
 	-fx-base: #25364a;

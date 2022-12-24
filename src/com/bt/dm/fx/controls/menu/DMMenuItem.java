@@ -41,6 +41,7 @@ public class DMMenuItem extends Pane {
 		private boolean verticalAlign = true;
 		private IconClickEvent menuItemClickEvent;
 		private String classNames;
+		private List<DMMenuItem> subMenus;
 
 		public DMMenuItemBuilder(String menuId) {
 			this.menuId = menuId;
@@ -74,6 +75,11 @@ public class DMMenuItem extends Pane {
 		public DMMenuItemBuilder menuItemClickEvent(
 				IconClickEvent menuItemClickEvent) {
 			this.menuItemClickEvent = menuItemClickEvent;
+			return this;
+		}
+		
+		public DMMenuItemBuilder subMenus(List<DMMenuItem> subMenus) {
+			this.subMenus = subMenus;
 			return this;
 		}
 	}
@@ -137,7 +143,7 @@ public class DMMenuItem extends Pane {
 
 		box.setId(this.builder.menuId);
 		box.setCursor(Cursor.HAND);
-		box.setOnMouseClicked(event -> {
+		this.setOnMouseClicked(event -> {
 			if (this.builder.menuItemClickEvent != null) {
 				this.builder.menuItemClickEvent.onClick(event);
 			}
@@ -153,6 +159,14 @@ public class DMMenuItem extends Pane {
 
 	public void unSelect() {
 		this.getStyleClass().remove("active");
+	}
+	
+	public String getMenuTitle() {
+		return builder.menuTitle;
+	}
+	
+	public List<DMMenuItem> getSubMenus() {
+		return builder.subMenus;
 	}
 
 	private void subscribeOnThemeChange() {
