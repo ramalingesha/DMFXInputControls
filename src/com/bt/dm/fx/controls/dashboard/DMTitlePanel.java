@@ -176,11 +176,11 @@ public class DMTitlePanel extends DMView {
 		colorPickerBox.getChildren().addAll(colorPickerMenu);
 		
 		List<DMMenuItem> menuItems = new ArrayList<DMMenuItem>();
-		menuItems.add(this.getThemeColorMenuItem("blue", "app.themeColor.blue", AppTheme.BLUE));
-		menuItems.add(this.getThemeColorMenuItem("indigo", "app.themeColor.indigo", AppTheme.INDIGO));
-		menuItems.add(this.getThemeColorMenuItem("teal", "app.themeColor.teal", AppTheme.TEAL));
-		menuItems.add(this.getThemeColorMenuItem("deepOrange", "app.themeColor.deepOrange", AppTheme.DEEP_ORANGE));
-		menuItems.add(this.getThemeColorMenuItem("dark", "app.themeColor.dark", AppTheme.DARK));
+		menuItems.add(this.getThemeColorMenuItem("blue", "app.themeColor.blue", AppTheme.BLUE, "#0069c0"));
+		menuItems.add(this.getThemeColorMenuItem("indigo", "app.themeColor.indigo", AppTheme.INDIGO, "#002984"));
+		menuItems.add(this.getThemeColorMenuItem("teal", "app.themeColor.teal", AppTheme.TEAL, "#00675b"));
+		menuItems.add(this.getThemeColorMenuItem("deepOrange", "app.themeColor.deepOrange", AppTheme.DEEP_ORANGE, "#c41c00"));
+		menuItems.add(this.getThemeColorMenuItem("dark", "app.themeColor.dark", AppTheme.DARK, "#121212"));
 		
 		DMContextMenu themeContextMenu = new DMContextMenu(menuItems);
 		
@@ -191,7 +191,7 @@ public class DMTitlePanel extends DMView {
 		return colorPickerBox;
 	}
 	
-	private DMMenuItem getThemeColorMenuItem(String menuId, String titleKey, AppTheme themeName) {
+	private DMMenuItem getThemeColorMenuItem(String menuId, String titleKey, AppTheme themeName, String colorCode) {
 		DMMenuItem menuItem = new DMMenuItem(new DMMenuItemBuilder(menuId)
 				.menuTitle(titleKey)
 				.classNames("english-font")
@@ -210,7 +210,7 @@ public class DMTitlePanel extends DMView {
 							themePubSubTopicModel);
 				}));
 		
-		menuItem.setStyle("-fx-background-color: #25364a;");
+		menuItem.setStyle(String.format("-fx-background-color: %s;", colorCode));
 		
 		return menuItem;
 	}
