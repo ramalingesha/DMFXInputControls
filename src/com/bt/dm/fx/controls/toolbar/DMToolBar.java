@@ -88,6 +88,10 @@ public class DMToolBar extends ToolBar {
 			this.cancelBtnFocusListener = cancelBtnFocusListener;
 			return this;
 		}
+
+		public DMFormPanelToolBarEvent getToolBarEvent() {
+			return toolBarEvent;
+		}
 	}
 
 	private FXButtonCmp saveButton;

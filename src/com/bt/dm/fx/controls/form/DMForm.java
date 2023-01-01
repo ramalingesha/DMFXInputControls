@@ -15,6 +15,9 @@ import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Separator;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyCodeCombination;
+import javafx.scene.input.KeyCombination;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
@@ -33,15 +36,11 @@ import com.bt.dm.fx.controls.dialog.FXMessageBox.FXMessageBoxBuilder;
 import com.bt.dm.fx.controls.dialog.setting.DMSettingDialogCmp;
 import com.bt.dm.fx.controls.dialog.setting.DMSettingDialogInputHandler;
 import com.bt.dm.fx.controls.input.FXDualTextInputCmp;
-import com.bt.dm.fx.controls.labels.FXFontAwesomeIcon;
 import com.bt.dm.fx.controls.labels.FXLabelCmp;
-import com.bt.dm.fx.controls.labels.FXFontAwesomeIcon.FXFontAwesomeIconBuilder;
 import com.bt.dm.fx.controls.theme.ControlsTheme;
 import com.bt.dm.fx.controls.toolbar.DMToolBar;
 import com.bt.dm.fx.controls.toolbar.DMToolBar.DMToolBarBuilder;
 import com.bt.dm.fx.controls.utils.UIHelper;
-
-import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 
 /**
  * @author Ramalingesha ML
@@ -127,6 +126,15 @@ public class DMForm extends Pane {
 		}
 
 		this.subscribeOnThemeChange();
+
+		KeyCombination ctrlS = new KeyCodeCombination(KeyCode.S, KeyCombination.CONTROL_DOWN);
+		
+		this.setOnKeyPressed(event -> {
+			if (ctrlS.match(event) && builder.toolBarBuilder != null
+					&& builder.toolBarBuilder.getToolBarEvent() != null) {
+				builder.toolBarBuilder.getToolBarEvent().onSaveBtnClick();
+			}
+		});
 
 		this.getChildren().add(borderPane);
 	}
