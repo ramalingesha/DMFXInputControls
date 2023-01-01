@@ -60,10 +60,14 @@ public class DMContextMenu extends Pane {
 	}
 
 	public void show(DMMenuItem parentMenu) {
+		this.show(parentMenu, 0);
+	}
+	
+	public void show(DMMenuItem parentMenu, int offsetX) {
 		this.hide();
 
 		Bounds bounds = parentMenu.localToScene(parentMenu.getBoundsInLocal());
-		double xPos = bounds.getMinX() + bounds.getWidth();
+		double xPos = bounds.getMinX() + bounds.getWidth() + offsetX;
 		double yPos = bounds.getMinY();
 
 		this.contextMenu.show(parentMenu, xPos, yPos);
