@@ -18,6 +18,7 @@ import com.bt.dm.core.pubsub.PubSubEvent;
 import com.bt.dm.core.pubsub.PubSubEventDataModel;
 import com.bt.dm.core.pubsub.PubSubEventHandler;
 import com.bt.dm.core.utils.ConstantUtils;
+import com.bt.dm.core.utils.DMCollectionUtils;
 import com.bt.dm.core.utils.RandomNumberGenerator;
 import com.bt.dm.fx.controls.DMControl;
 import com.bt.dm.fx.controls.DMControlBuilder;
@@ -133,6 +134,20 @@ public class FXChoiceBoxCmp extends DMControl<ReferenceModel> {
 			this.choiceBox.setValue(value.getValue());
 		} else {
 			this.choiceBox.getSelectionModel().selectFirst();
+		}
+	}
+	
+	public void setValue(int id) {
+		if (DMCollectionUtils.notEmptyOrNull(itemsList)) {
+			int index = 0;
+			for (ReferenceModel refModel : itemsList) {
+				if (refModel.getId().compareTo(id) == 0) {
+					this.choiceBox.getSelectionModel().select(index);
+					break;
+				}
+
+				index++;
+			}
 		}
 	}
 
