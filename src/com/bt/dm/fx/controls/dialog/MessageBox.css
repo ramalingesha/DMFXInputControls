@@ -11,6 +11,15 @@
 	-fx-font: 17px "Roboto" !important;
 }
 
+.kannada-font {
+	-fx-font: 20px "Nudi 01 e" !important;
+}
+
 .kannada-error-font {
 	-fx-font: 20px "Nudi 01 e" !important;
+}
+
+.kannada-error-red-font {
+	-fx-font: 20px "Nudi 01 e" !important;
+	-fx-fill: #ff0000 !important;
 }
