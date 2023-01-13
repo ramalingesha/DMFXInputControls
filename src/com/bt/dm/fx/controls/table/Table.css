@@ -26,5 +26,13 @@
 .table-view .column-header.center-align {
 	-fx-border-width: 0 0 1px 0;
 	-fx-border-color: #ffffff;
-	
+}
+
+.error-row,
+.error-row > * {
+	-fx-background-color: red !important;
+}
+
+.error-row > * > .label {
+	-fx-text-fill: #ffffff;
 }
