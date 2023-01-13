@@ -21,13 +21,13 @@ import javafx.scene.layout.VBox;
  *
  *         Created on Oct 7, 2022 08:12:03 AM
  */
-public class DMSettingInputPanel extends VBox {
+public class DMReportSettingInputPanel extends VBox {
 	private ReportBorderTypeEnum reportBorderType;
 	private FXRadioButtonCmp noBorderTypeCmp;
 	private FXRadioButtonCmp pageBorderTypeCmp;
 	private FXRadioButtonCmp columnBorderTypeCmp;
 
-	public DMSettingInputPanel(String reportName) {
+	public DMReportSettingInputPanel(String reportName) {
 		this.createAndShowGUI();
 		this.initSettings(reportName);
 		this.registerEvents();

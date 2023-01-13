@@ -1,7 +1,7 @@
 package com.bt.dm.fx.controls.dialog.setting;
 
 import com.bt.dm.core.pubsub.PubSubEvent;
-import com.bt.dm.core.pubsub.settings.ReportSettingPubSubModel;
+import com.bt.dm.core.pubsub.settings.SettingPubSubModel;
 import com.bt.dm.fx.controls.button.FXButtonCmp;
 import com.bt.dm.fx.controls.button.FXButtonCmp.FXButtonCmpBuilder;
 import com.bt.dm.fx.controls.labels.FXFontAwesomeIcon;
@@ -28,7 +28,7 @@ import javafx.scene.layout.VBox;
  */
 public class DMSettingDialogCmp extends HBox {
 	private DMSettingDialogInputHandler settingDialogInputHandler;
-	private ReportSettingPubSubModel popupSettingModel;
+	private SettingPubSubModel popupSettingModel;
 
 	public DMSettingDialogCmp(DMSettingDialogInputHandler settingDialogInputHandler) {
 		super();
@@ -41,10 +41,10 @@ public class DMSettingDialogCmp extends HBox {
 		ControlSize size = settingDialogInputHandler.getSettingDialogSize();
 
 		if (size == null) {
-			this.popupSettingModel = new ReportSettingPubSubModel(settingDialogInputHandler.getSettingDialogTitle(),
+			this.popupSettingModel = new SettingPubSubModel(settingDialogInputHandler.getSettingDialogTitle(),
 					contentPanel);
 		} else {
-			this.popupSettingModel = new ReportSettingPubSubModel(settingDialogInputHandler.getSettingDialogTitle(),
+			this.popupSettingModel = new SettingPubSubModel(settingDialogInputHandler.getSettingDialogTitle(),
 					contentPanel, size.getWidth(), size.getHeight());
 		}
 	}
