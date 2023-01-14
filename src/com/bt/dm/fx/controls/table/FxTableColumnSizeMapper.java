@@ -4,6 +4,8 @@
 package com.bt.dm.fx.controls.table;
 
 import com.bt.dm.fx.controls.crosstable.DMCrossTableColumnModel;
+import com.bt.dm.fx.controls.table.model.DMTableModel;
+import com.bt.dm.fx.controls.table.model.FXTableColumnModel;
 
 /**
  * @author Ramalingesha ML

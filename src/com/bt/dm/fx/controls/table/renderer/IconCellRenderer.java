@@ -7,8 +7,8 @@ import javafx.scene.control.TableCell;
 
 import com.bt.dm.fx.controls.labels.FXMaterialDesignIcon;
 import com.bt.dm.fx.controls.labels.FXMaterialDesignIcon.FXMaterialDesignIconBuilder;
-import com.bt.dm.fx.controls.table.DMTableModel;
 import com.bt.dm.fx.controls.table.event.TableCellClickEvent;
+import com.bt.dm.fx.controls.table.model.DMTableModel;
 
 import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIcon;
 

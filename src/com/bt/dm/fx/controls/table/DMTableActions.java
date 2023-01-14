@@ -9,6 +9,7 @@ import javafx.event.Event;
 
 import com.bt.dm.fx.controls.dialog.FXMessageBox;
 import com.bt.dm.fx.controls.dialog.FXMessageBox.FXMessageBoxBuilder;
+import com.bt.dm.fx.controls.table.model.DMTableModel;
 
 /**
  * @author Ramalingesha ML

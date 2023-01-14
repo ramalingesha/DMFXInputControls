@@ -39,6 +39,8 @@ import com.bt.dm.fx.controls.labels.FXMaterialDesignIcon.FXMaterialDesignIconBui
 import com.bt.dm.fx.controls.search.DMSearchCmp;
 import com.bt.dm.fx.controls.table.FXTable.FXTableBuilder;
 import com.bt.dm.fx.controls.table.event.TableCellClickEvent;
+import com.bt.dm.fx.controls.table.model.DMTableModel;
+import com.bt.dm.fx.controls.table.model.FXTableColumnModel;
 import com.bt.dm.fx.controls.table.renderer.CheckBoxCellRenderer;
 import com.bt.dm.fx.controls.table.renderer.IconCellRenderer;
 import com.bt.dm.fx.controls.theme.ControlsTheme;

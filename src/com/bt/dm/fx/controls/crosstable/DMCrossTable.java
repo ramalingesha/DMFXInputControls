@@ -8,10 +8,10 @@ import com.bt.dm.core.pubsub.PubSubEvent;
 import com.bt.dm.core.pubsub.PubSubEventDataModel;
 import com.bt.dm.core.pubsub.PubSubEventHandler;
 import com.bt.dm.core.utils.DMCollectionUtils;
-import com.bt.dm.fx.controls.table.DMTableModel;
-import com.bt.dm.fx.controls.table.FXTableColumnModel;
 import com.bt.dm.fx.controls.table.FXTableView;
 import com.bt.dm.fx.controls.table.FXTableView.FXTableViewBuilder;
+import com.bt.dm.fx.controls.table.model.DMTableModel;
+import com.bt.dm.fx.controls.table.model.FXTableColumnModel;
 import com.bt.dm.fx.controls.table.FxTableColumnSizeMapper;
 import com.bt.dm.fx.controls.theme.ControlsTheme;
 

@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import com.bt.dm.fx.controls.table.DMTableModel;
+import com.bt.dm.fx.controls.table.model.DMTableModel;
 
 /**
  * @author Ramalingesha ML

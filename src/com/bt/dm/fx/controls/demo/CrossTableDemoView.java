@@ -17,8 +17,8 @@ import com.bt.dm.fx.controls.crosstable.DMCrossTableColumnModel;
 import com.bt.dm.fx.controls.crosstable.DMCrossTableColumnModel.DMCrossTableColumnModelBuilder;
 import com.bt.dm.fx.controls.crosstable.DMCrossTableModel;
 import com.bt.dm.fx.controls.crosstable.DMCrossTableRowDataMap;
-import com.bt.dm.fx.controls.table.DMTableModel;
 import com.bt.dm.fx.controls.table.FxTableColumnSizeMapper;
+import com.bt.dm.fx.controls.table.model.DMTableModel;
 import com.bt.dm.fx.controls.utils.SizeHelper;
 
 /**

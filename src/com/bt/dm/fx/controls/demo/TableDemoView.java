@@ -8,9 +8,9 @@ import javafx.collections.ObservableList;
 import javafx.scene.layout.Pane;
 
 import com.bt.dm.fx.controls.table.DMTableActions;
-import com.bt.dm.fx.controls.table.FXTableColumnModel;
 import com.bt.dm.fx.controls.table.FXTableView;
 import com.bt.dm.fx.controls.table.FXTableView.FXTableViewBuilder;
+import com.bt.dm.fx.controls.table.model.FXTableColumnModel;
 import com.bt.dm.fx.controls.table.FxTableColumnSizeMapper;
 
 /**

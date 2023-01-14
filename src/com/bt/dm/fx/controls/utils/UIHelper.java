@@ -27,8 +27,8 @@ import com.bt.dm.core.model.DMModel;
 import com.bt.dm.core.utils.DMCollectionUtils;
 import com.bt.dm.fx.controls.DMControl;
 import com.bt.dm.fx.controls.labels.FXCheckBoxCmp;
-import com.bt.dm.fx.controls.table.DMTableModel;
 import com.bt.dm.fx.controls.table.event.DMTableModelCreateEvent;
+import com.bt.dm.fx.controls.table.model.DMTableModel;
 
 /**
  * @author Ramalingesha ML

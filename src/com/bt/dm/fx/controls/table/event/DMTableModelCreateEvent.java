@@ -4,7 +4,7 @@
 package com.bt.dm.fx.controls.table.event;
 
 import com.bt.dm.core.model.DMModel;
-import com.bt.dm.fx.controls.table.DMTableModel;
+import com.bt.dm.fx.controls.table.model.DMTableModel;
 
 /**
  * @author Ramalingesha ML

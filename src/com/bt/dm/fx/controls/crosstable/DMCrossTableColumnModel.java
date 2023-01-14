@@ -6,9 +6,9 @@ package com.bt.dm.fx.controls.crosstable;
 import javafx.beans.property.SimpleObjectProperty;
 
 import com.bt.dm.core.type.TextFormatTypeEnum;
-import com.bt.dm.fx.controls.table.DMTableModel;
-import com.bt.dm.fx.controls.table.FXTableColumnModel;
 import com.bt.dm.fx.controls.table.event.TableCellValueUpdateEvent;
+import com.bt.dm.fx.controls.table.model.DMTableModel;
+import com.bt.dm.fx.controls.table.model.FXTableColumnModel;
 
 /**
  * @author Ramalingesha ML

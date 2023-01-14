@@ -1,11 +1,11 @@
 package com.bt.dm.fx.controls.demo;
 
+import com.bt.dm.fx.controls.table.model.DMTableModel;
+
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
-
-import com.bt.dm.fx.controls.table.DMTableModel;
 
 /**
  * 

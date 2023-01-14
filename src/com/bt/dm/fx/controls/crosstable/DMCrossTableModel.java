@@ -5,8 +5,8 @@ package com.bt.dm.fx.controls.crosstable;
 
 import javafx.collections.ObservableList;
 
-import com.bt.dm.fx.controls.table.DMTableModel;
 import com.bt.dm.fx.controls.table.FxTableColumnSizeMapper;
+import com.bt.dm.fx.controls.table.model.DMTableModel;
 
 /**
  * @author Ramalingesha ML

@@ -9,8 +9,8 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.TableCell;
 
-import com.bt.dm.fx.controls.table.DMTableModel;
 import com.bt.dm.fx.controls.table.event.TableRowSelectionEvent;
+import com.bt.dm.fx.controls.table.model.DMTableModel;
 
 /**
  * 

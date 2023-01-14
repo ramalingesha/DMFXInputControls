@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.bt.dm.fx.controls.table;
+package com.bt.dm.fx.controls.table.model;
 
 import java.io.Serializable;
 
