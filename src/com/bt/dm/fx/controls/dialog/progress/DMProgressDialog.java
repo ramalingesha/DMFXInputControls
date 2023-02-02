@@ -33,8 +33,8 @@ public class DMProgressDialog {
 			DMTaskProgressEvent dmTaskProgressEvent) {
 		if (instance == null) {
 			instance = new DMProgressDialog();
-			instance.createPopupDialogContent(dmTaskProgressEvent);
 		}
+
 		instance.createPopupDialogContent(dmTaskProgressEvent);
 
 		return instance;

@@ -86,6 +86,8 @@ public class DMModalDialog {
 
 	private void createStage() {
 		this.contentPanel = new Pane();
+		contentPanel.getStyleClass().add("dm-form");
+		
 		if (this.builder.contentPane != null) {
 			this.contentPanel.getChildren().add(this.builder.contentPane);
 		}
@@ -172,6 +174,8 @@ public class DMModalDialog {
 
 	private void addRootThemeStyleSheet() {
 		this.root.getStylesheets().clear();
+		this.root.getStylesheets().addAll(
+				this.builder.parent.getScene().getStylesheets());
 		this.root
 				.getStylesheets()
 				.add(getClass()
@@ -182,6 +186,10 @@ public class DMModalDialog {
 		this.root.getStylesheets().add(
 				getClass().getClassLoader()
 						.getResource("com/bt/dm/fx/controls/DMControl.css")
+						.toExternalForm());
+		this.root.getStylesheets().add(
+				getClass().getClassLoader()
+						.getResource("com/bt/dm/fx/controls/form/Form.css")
 						.toExternalForm());
 		this.root
 				.getStylesheets()
@@ -201,9 +209,15 @@ public class DMModalDialog {
 										+ ControlsTheme
 												.getThemeCssFileName("Dashboard"))
 						.toExternalForm());
-
-		this.root.getStylesheets().addAll(
-				this.builder.parent.getScene().getStylesheets());
+		this.root
+				.getStylesheets()
+				.add(getClass()
+						.getClassLoader()
+						.getResource(
+								"com/bt/dm/fx/controls/form/"
+										+ ControlsTheme
+												.getThemeCssFileName("Form"))
+						.toExternalForm());
 	}
 
 	public void show() {
