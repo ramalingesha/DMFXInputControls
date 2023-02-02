@@ -115,19 +115,22 @@ public class DMTitlePanel extends DMView {
 		minimizeIcon.getStyleClass().add("icon-style");
 		closeIcon.getStyleClass().add("icon-style");
 
-		HBox iconBox = new HBox(minimizeIcon, closeIcon);
-
 		HBox box = new HBox();
-		box.setSpacing(20);
-		box.getChildren().addAll(this.getColorPickerBox(), iconBox);
+		box.setAlignment(Pos.CENTER_LEFT);
+		
+		box.getChildren().addAll(this.getColorPickerBox(), minimizeIcon, closeIcon);
 
 		BorderPane borderPane = new BorderPane();
 		borderPane.setPadding(new Insets(5));
 
 		if (this.builder.subTitle != null) {
-			borderPane.setLeft(new FXLabelCmp(new FXLabelCmpBuilder().label(
+			FXLabelCmp title = new FXLabelCmp(new FXLabelCmpBuilder().label(
 					this.builder.subTitle).classNames(
-					new String[] { "heading2" })));
+					new String[] { "heading2" }));
+			HBox titlePanel = new HBox(title);
+			titlePanel.setAlignment(Pos.CENTER_LEFT);
+			
+			borderPane.setLeft(titlePanel);
 		}
 
 		mainLabelCmp = new FXLabelCmp(new FXLabelCmpBuilder()
@@ -167,12 +170,11 @@ public class DMTitlePanel extends DMView {
 		DMMenuItem colorPickerMenu = new DMMenuItem(
 				new DMMenuItemBuilder("color-picker")
 				.menuTitle("app.appThemeChooser")
+				.classNames("small-font-menu")
 				.faIcon(paintBrushIcon)
 				.verticalAlign(false));
 		
 		HBox colorPickerBox = new HBox();
-		colorPickerBox.setAlignment(Pos.CENTER);
-		colorPickerBox.setSpacing(5);
 		colorPickerBox.getChildren().addAll(colorPickerMenu);
 		
 		List<DMMenuItem> menuItems = new ArrayList<DMMenuItem>();

@@ -29,3 +29,6 @@
 .dm-card {
     -fx-padding: 15;
 }
+.small-font-menu {
+	-fx-font-size: 20px !important;
+}
