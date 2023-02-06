@@ -111,14 +111,16 @@ public class DMTitlePanel extends DMView {
 				minimizeIconBuilder);
 		FXMaterialDesignIcon closeIcon = new FXMaterialDesignIcon(
 				closeIconBuilder);
+		FXMaterialDesignIcon helpIcon = new FXMaterialDesignIcon(new FXMaterialDesignIconBuilder(MaterialDesignIcon.HELP_CIRCLE));
 
 		minimizeIcon.getStyleClass().add("icon-style");
 		closeIcon.getStyleClass().add("icon-style");
-
+		helpIcon.getStyleClass().add("icon-style");
+		
 		HBox box = new HBox();
 		box.setAlignment(Pos.CENTER_LEFT);
 		
-		box.getChildren().addAll(this.getColorPickerBox(), minimizeIcon, closeIcon);
+		box.getChildren().addAll(this.getColorPickerBox(), helpIcon, minimizeIcon, closeIcon);
 
 		BorderPane borderPane = new BorderPane();
 		borderPane.setPadding(new Insets(5));
