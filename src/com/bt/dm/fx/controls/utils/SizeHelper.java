@@ -19,6 +19,8 @@ public final class SizeHelper {
 	public static ControlSize INPUT_CONTROL_SMALL_SIZE;
 	private static boolean LARGE_SCREEN;
 	public static ControlSize MAIN_PANEL_SIZE;
+	public static double ERROR_DIALOG_WIDTH;
+	public static double ERROR_DIALOG_HEIGHT;
 
 	static {
 		computeControlSizeValues();
@@ -43,6 +45,9 @@ public final class SizeHelper {
 		SizeHelper.INPUT_CONTROL_SMALL_SIZE = new ControlSize(SizeHelper.SCREEN_SIZE.getWidth() * 0.07, 30);
 		SizeHelper.MAIN_PANEL_SIZE = new ControlSize(SizeHelper.SCREEN_SIZE.getWidth() - mainPanelWidthOffset,
 				SizeHelper.SCREEN_SIZE.getHeight() - mainPanelHeightOffset);
+		
+		SizeHelper.ERROR_DIALOG_WIDTH = SizeHelper.SCREEN_SIZE.getWidth() * 0.65;
+		SizeHelper.ERROR_DIALOG_HEIGHT = SizeHelper.SCREEN_SIZE.getHeight() * 0.5;
 	}
 
 	public static boolean isLargeScreen() {

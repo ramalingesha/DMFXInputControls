@@ -113,8 +113,8 @@ public class DMErrorModalDialog {
 
 		// Adding scene to the stage
 		stage.setScene(scene);
-		stage.setWidth(SizeHelper.SCREEN_SIZE.getWidth() * 0.65);
-		stage.setHeight(SizeHelper.SCREEN_SIZE.getHeight() * 0.5);
+		stage.setWidth(SizeHelper.ERROR_DIALOG_WIDTH);
+		stage.setHeight(SizeHelper.ERROR_DIALOG_HEIGHT);
 
 		this.addRootThemeStyleSheet();
 		this.subscribeOnThemeChange();
