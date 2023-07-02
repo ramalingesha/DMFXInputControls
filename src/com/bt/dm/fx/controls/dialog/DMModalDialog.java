@@ -22,6 +22,7 @@ import com.bt.dm.core.pubsub.PubSubEvent;
 import com.bt.dm.core.pubsub.PubSubEventDataModel;
 import com.bt.dm.core.pubsub.PubSubEventHandler;
 import com.bt.dm.core.utils.DMStringUtils;
+import com.bt.dm.fx.controls.DMLabelBuilder;
 import com.bt.dm.fx.controls.events.IconClickEvent;
 import com.bt.dm.fx.controls.labels.FXLabelCmp;
 import com.bt.dm.fx.controls.labels.FXLabelCmp.FXLabelCmpBuilder;
@@ -45,6 +46,7 @@ public class DMModalDialog {
 		private String title;
 		private Double width;
 		private Double height;
+		private boolean titleEnglishFont;
 
 		public DMModelDialogBuilder(Window parent) {
 			this.parent = parent;
@@ -67,6 +69,11 @@ public class DMModalDialog {
 
 		public DMModelDialogBuilder contentPane(Pane contentPane) {
 			this.contentPane = contentPane;
+			return this;
+		}
+		
+		public DMModelDialogBuilder titleEnglishFont(boolean titleEnglishFont) {
+			this.titleEnglishFont = titleEnglishFont;
 			return this;
 		}
 	}
@@ -146,11 +153,17 @@ public class DMModalDialog {
 				});
 		FXMaterialDesignIcon closeIcon = new FXMaterialDesignIcon(
 				closeIconBuilder);
-
-		titleCmp = new FXLabelCmp(new FXLabelCmpBuilder().label(
+		
+		DMLabelBuilder titleLabelBuilder = new FXLabelCmpBuilder().label(
 				this.builder.title != null ? this.builder.title : "app.title")
-				.font(Fonts.getInstance().getDefaultHeaderFont()));
+				.font(Fonts.getInstance().getDefaultHeaderFont());
+		
+		if (this.builder.titleEnglishFont) {
+			titleLabelBuilder.classNames(new String[] { "english-font" });
+		}
 
+		titleCmp = new FXLabelCmp(titleLabelBuilder);
+		
 		Region spaceRegion = new Region();
 		HBox.setHgrow(spaceRegion, Priority.ALWAYS);
 

@@ -146,6 +146,10 @@ public class FXDatePickerCmp extends DMControl<Date> {
 			this.datePickerCmp.setValue(value);
 		}
 	}
+	
+	public void clearDateSelection() {
+		this.datePickerCmp.setValue(null);
+	}
 
 	@Override
 	public String generateUniqueId() {

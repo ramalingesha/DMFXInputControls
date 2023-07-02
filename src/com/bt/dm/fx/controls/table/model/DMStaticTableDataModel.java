@@ -22,6 +22,7 @@ public class DMStaticTableDataModel implements DMModel {
 	private boolean i18n;
 	private boolean rightAlign;
 	private boolean showEditIcon;
+	private double width = 100;
 	private IconClickEvent editIconClickEvent;
 
 	public DMStaticTableDataModel(String columnId, String text) {
@@ -56,6 +57,11 @@ public class DMStaticTableDataModel implements DMModel {
 
 	public DMStaticTableDataModel rightAlign(boolean rightAlign) {
 		this.rightAlign = rightAlign;
+		return this;
+	}
+	
+	public DMStaticTableDataModel width(double width) {
+		this.width = width;
 		return this;
 	}
 	
@@ -98,5 +104,9 @@ public class DMStaticTableDataModel implements DMModel {
 
 	public IconClickEvent getEditIconClickEvent() {
 		return editIconClickEvent;
+	}
+
+	public double getWidth() {
+		return width;
 	}
 }

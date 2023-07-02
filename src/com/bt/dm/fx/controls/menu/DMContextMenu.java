@@ -6,6 +6,7 @@ package com.bt.dm.fx.controls.menu;
 import java.util.List;
 
 import javafx.geometry.Bounds;
+import javafx.scene.Node;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.CustomMenuItem;
 import javafx.scene.control.Menu;
@@ -59,16 +60,24 @@ public class DMContextMenu extends Pane {
 		});
 	}
 
-	public void show(DMMenuItem parentMenu) {
+	public void show(Node parentMenu) {
 		this.show(parentMenu, 0);
 	}
 	
-	public void show(DMMenuItem parentMenu, int offsetX) {
+	public void show(Node parentMenu, boolean showBelowParent) {
+		this.show(parentMenu, 0, showBelowParent);
+	}
+	
+	public void show(Node parentMenu, int offsetX) {
+		this.show(parentMenu, offsetX, false);
+	}
+	
+	public void show(Node parentMenu, int offsetX, boolean showBelowParent) {
 		this.hide();
 
 		Bounds bounds = parentMenu.localToScene(parentMenu.getBoundsInLocal());
-		double xPos = bounds.getMinX() + bounds.getWidth() + offsetX;
-		double yPos = bounds.getMinY();
+		double xPos = showBelowParent ? bounds.getMinX() : (bounds.getMinX() + bounds.getWidth() + offsetX);
+		double yPos = showBelowParent ? (bounds.getMaxY() + bounds.getHeight()) : bounds.getMinY();
 
 		this.contextMenu.show(parentMenu, xPos, yPos);
 	}

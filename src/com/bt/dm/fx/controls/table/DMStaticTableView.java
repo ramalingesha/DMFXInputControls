@@ -1,5 +1,7 @@
 package com.bt.dm.fx.controls.table;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -44,8 +46,11 @@ public class DMStaticTableView extends DMView {
 	private Double tableHeight;
 	private VBox tableDataPane;
 	private ScrollPane tableDataScrollPane;
+	private boolean crossTable;
+	private boolean enableScrollBar;
 	
 	private final double TABLE_DATA_CONTAINER_HEIGHT = SizeHelper.MAIN_PANEL_SIZE.getHeight() - 230;
+	private Map<String, List<Object>> tableDataObjects;
 
 	public DMStaticTableView(List<DMStaticTableColumnModel> columnModels) {
 		this(columnModels, null);
@@ -54,6 +59,16 @@ public class DMStaticTableView extends DMView {
 	public DMStaticTableView(List<DMStaticTableColumnModel> columnModels, Double tableHeight) {
 		this.columnModels = columnModels;
 		this.tableHeight = tableHeight == null ? TABLE_DATA_CONTAINER_HEIGHT : tableHeight;
+	}
+	
+	public DMStaticTableView crossTable(boolean crossTable) {
+		this.crossTable = crossTable;
+		return this;
+	}
+	
+	public DMStaticTableView enableScrollBar(boolean enableScrollBar) {
+		this.enableScrollBar = enableScrollBar;
+		return this;
 	}
 
 	@Override
@@ -64,10 +79,6 @@ public class DMStaticTableView extends DMView {
 		Pane tableColumnsPane = this.getColumnHeaders();
 		tableDataPane = new VBox(3);
 
-		tableDataScrollPane = new ScrollPane(tableDataPane);
-		tableDataScrollPane.setPrefHeight(this.tableHeight);
-		tableDataScrollPane.setHbarPolicy(ScrollBarPolicy.NEVER);
-
 		KeyFrame keyFrame1 = new KeyFrame(Duration.millis(10), e -> {
 			double width = tableColumnsPane.getBoundsInLocal().getWidth();
 			tableDataPane.setPrefWidth(width + 15);
@@ -76,8 +87,16 @@ public class DMStaticTableView extends DMView {
 
 		Platform.runLater(timeline::play);
 
-		tableContainer.getChildren().addAll(tableColumnsPane, tableDataScrollPane);
-
+		if(this.enableScrollBar) {
+			tableDataScrollPane = new ScrollPane(tableDataPane);
+			tableDataScrollPane.setPrefHeight(this.tableHeight);
+			tableDataScrollPane.setHbarPolicy(ScrollBarPolicy.NEVER);
+			
+			tableContainer.getChildren().addAll(tableColumnsPane, tableDataScrollPane);
+		} else {
+			tableContainer.getChildren().addAll(tableColumnsPane, tableDataPane);			
+		}
+		
 		return tableContainer;
 	}
 
@@ -88,16 +107,24 @@ public class DMStaticTableView extends DMView {
 			return box;
 		}
 
-		columnModels.forEach(columnModel -> {
-			box.getChildren().add(this.createColumnHeader(columnModel.getColumnHeader(), columnModel.isI18n(),
-					columnModel.getClassName(), columnModel.getWidth()));
-		});
+		DMStaticTableColumnModel firstColumnModel = columnModels.get(0);
+
+		box.getChildren().add(this.createColumnHeader(firstColumnModel.getColumnHeader(), firstColumnModel.isI18n(),
+				this.crossTable ? "no-color" : firstColumnModel.getClassName(), firstColumnModel.getWidth()));
+
+		if (columnModels.size() > 1) {
+			columnModels.subList(1, columnModels.size()).forEach(columnModel -> {
+				box.getChildren().add(this.createColumnHeader(columnModel.getColumnHeader(), columnModel.isI18n(),
+						columnModel.getClassName(), columnModel.getWidth()));
+			});
+		}
 
 		return box;
 	}
 
 	public void renderTableData(List<List<DMStaticTableDataModel>> dataModels) {
 		this.tableDataPane.getChildren().clear();
+		this.tableDataObjects = new HashMap<>();
 
 		if (DMCollectionUtils.notEmptyOrNull(dataModels)) {
 			int row = 1;
@@ -108,33 +135,45 @@ public class DMStaticTableView extends DMView {
 				if (columnDataMap == null || columnDataMap.isEmpty()) {
 					continue;
 				}
-
+				
 				String rowStyleClass = row++ % 2 == 0 ? "odd" : "even";
 
 				HBox rowPane = new HBox(6);
 				rowPane.getStyleClass().add(String.format("table-row-cell-%s", rowStyleClass));
 
-				columnModels.forEach(columnModel -> {
-					DMStaticTableDataModel model = columnDataMap.get(columnModel.getColumnId());
+				for(DMStaticTableColumnModel columnModel: columnModels) {
+					String columnId = columnModel.getColumnId();
+					DMStaticTableDataModel model = columnDataMap.get(columnId);
+					List<Object> rowDataObjects = this.tableDataObjects.get(columnId);
+					
+					if(rowDataObjects == null) {
+						rowDataObjects = new ArrayList<>();
+						this.tableDataObjects.put(columnId, rowDataObjects);
+					}
 
 					if (model == null) {
 						rowPane.getChildren().add(this.createRowCell("", false, columnModel.getWidth(), rowStyleClass,
 								null, false, false, null));
-						return;
+						rowDataObjects.add("");
+						
+						continue;
 					}
 
 					if (model.getNode() != null) {
 						rowPane.getChildren().add(this.createRowCell(model.getNode(), rowStyleClass));
+						rowDataObjects.add(model.getNode());
 					} else if (model.getValueProperty() != null) {
 						rowPane.getChildren().add(this.createRowCell(model.getValueProperty(), columnModel.getWidth(),
 								rowStyleClass, model.getClassName(), model.isRightAlign()));
+						rowDataObjects.add(model.getValueProperty());
 					} else {
 						rowPane.getChildren()
 								.add(this.createRowCell(model.getText(), false, columnModel.getWidth(), rowStyleClass,
 										model.getClassName(), model.isRightAlign(), model.isShowEditIcon(),
 										model.getEditIconClickEvent()));
+						rowDataObjects.add(model.getText());
 					}
-				});
+				}
 
 				this.tableDataPane.getChildren().add(rowPane);
 			}
@@ -244,6 +283,11 @@ public class DMStaticTableView extends DMView {
 	}
 	
 	public void focusInlineEditTextField(int row, int column) {
+		if(!this.enableScrollBar) {
+			System.err.println("Scroll bar is not enabled");
+			return;
+		}
+		
 		ObservableList<Node> nodes = this.tableDataPane.getChildren();
 		
 		if (DMCollectionUtils.isEmptyOrNull(nodes)) {
@@ -268,5 +312,9 @@ public class DMStaticTableView extends DMView {
 
 			UIHelper.setFocus((Control) node);
 		}
+	}
+
+	public Map<String, List<Object>> getTableDataObjects() {
+		return tableDataObjects;
 	}
 }

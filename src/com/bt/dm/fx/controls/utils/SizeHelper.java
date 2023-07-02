@@ -21,6 +21,7 @@ public final class SizeHelper {
 	public static ControlSize MAIN_PANEL_SIZE;
 	public static double ERROR_DIALOG_WIDTH;
 	public static double ERROR_DIALOG_HEIGHT;
+	public static double DASHBOARD_TITLE_BAR_HEIGHT;
 
 	static {
 		computeControlSizeValues();
@@ -48,6 +49,8 @@ public final class SizeHelper {
 		
 		SizeHelper.ERROR_DIALOG_WIDTH = SizeHelper.SCREEN_SIZE.getWidth() * 0.65;
 		SizeHelper.ERROR_DIALOG_HEIGHT = SizeHelper.SCREEN_SIZE.getHeight() * 0.5;
+		
+		SizeHelper.DASHBOARD_TITLE_BAR_HEIGHT = 60;
 	}
 
 	public static boolean isLargeScreen() {

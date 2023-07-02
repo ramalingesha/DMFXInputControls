@@ -16,6 +16,7 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Separator;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TableView.TableViewSelectionModel;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
@@ -295,6 +296,10 @@ public class FXTableView<S extends DMTableModel> extends Pane {
 
 	public int getNoOfRecords() {
 		return this.table.getItems().size();
+	}
+	
+	public TableViewSelectionModel<S> getSelectionModel() {
+		return this.table.getSelectionModel();
 	}
 
 	private Pane getTableHeaderPane() {
@@ -637,7 +642,9 @@ class FXTable<S extends DMTableModel> extends TableView<S> {
 	}
 
 	public void addRecords(ObservableList<S> records) {
-		this.getItems().addAll(records);
+		if(DMCollectionUtils.notEmptyOrNull(records)) {
+			this.getItems().addAll(records);	
+		}
 	}
 
 	public void clearTableRecords() {

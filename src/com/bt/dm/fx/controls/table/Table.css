@@ -36,3 +36,7 @@
 .error-row > * > .label {
 	-fx-text-fill: #ffffff;
 }
+
+.table-view .column-header .no-color {
+   -fx-background-color: #ffffff;
+}
