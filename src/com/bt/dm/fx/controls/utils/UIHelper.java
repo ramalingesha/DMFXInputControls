@@ -16,6 +16,8 @@ import com.bt.dm.core.model.DMModel;
 import com.bt.dm.core.utils.DMCollectionUtils;
 import com.bt.dm.core.utils.DMNumberUtils;
 import com.bt.dm.fx.controls.DMControl;
+import com.bt.dm.fx.controls.dialog.FXMessageBox;
+import com.bt.dm.fx.controls.dialog.FXMessageBox.FXMessageBoxBuilder;
 import com.bt.dm.fx.controls.input.FXTextDecimalFormatterInputCmp;
 import com.bt.dm.fx.controls.input.FXTextDecimalFormatterInputCmp.FXTextDecimalFormatterInputCmpBuilder;
 import com.bt.dm.fx.controls.labels.FXCheckBoxCmp;
@@ -46,7 +48,7 @@ import javafx.scene.layout.Region;
  */
 public class UIHelper {
 	public static final ButtonType ALERT_OK_BUTTON = new ButtonType("OK",
-			ButtonData.OK_DONE);;
+			ButtonData.OK_DONE);
 	public static final ButtonType ALERT_CANCEL_BUTTON = new ButtonType(
 			"Cancel", ButtonData.CANCEL_CLOSE);
 
@@ -188,5 +190,15 @@ public class UIHelper {
 				return Integer.compare(v1, v2);
 			}
 		};
+	}
+	
+	public static <T> boolean checkReportEmptyData(List<T> records) {
+		boolean isEmpty = DMCollectionUtils.isEmptyOrNull(records);
+		
+		if (isEmpty) {
+			FXMessageBox.getInstance().show(new FXMessageBoxBuilder("app.reportView.noDataAvailable"));
+		}
+		
+		return isEmpty;
 	}
 }

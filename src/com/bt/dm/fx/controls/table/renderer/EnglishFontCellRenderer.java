@@ -3,10 +3,9 @@
  */
 package com.bt.dm.fx.controls.table.renderer;
 
-import javafx.scene.control.TableCell;
-
 import com.bt.dm.core.utils.DMStringUtils;
-import com.bt.dm.fx.controls.utils.Fonts;
+
+import javafx.scene.control.TableCell;
 
 /**
  * 
@@ -24,7 +23,7 @@ public class EnglishFontCellRenderer<T, V extends Object> extends
 		// Clear previous text and graphic if any
 		this.setText(null);
 		this.setGraphic(null);
-		this.setFont(Fonts.getInstance().getEnglishFont());
+		this.getStyleClass().add("english-font");
 
 		if (!empty) {
 			this.setText(DMStringUtils.getNutralValue(value));

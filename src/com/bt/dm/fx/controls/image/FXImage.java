@@ -40,8 +40,11 @@ public class FXImage extends ImageView {
 	}
 
 	private void createComponent() {
-		Image image = new Image(this.builder.imagePath);
-		this.setImage(image);
+		if(this.builder.imagePath != null) {
+			Image image = new Image(this.builder.imagePath);
+			this.setImage(image);	
+		}
+		
 		this.setSmooth(true);
 		this.setCache(true);
 

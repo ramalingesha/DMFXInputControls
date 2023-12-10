@@ -40,6 +40,7 @@ import com.bt.dm.fx.controls.labels.FXLabelCmp;
 import com.bt.dm.fx.controls.theme.ControlsTheme;
 import com.bt.dm.fx.controls.toolbar.DMToolBar;
 import com.bt.dm.fx.controls.toolbar.DMToolBar.DMToolBarBuilder;
+import com.bt.dm.fx.controls.utils.SizeHelper;
 import com.bt.dm.fx.controls.utils.UIHelper;
 
 /**
@@ -57,6 +58,7 @@ public class DMForm extends Pane {
 		private ObservableList<Node> formHeaderControls;
 		private Map<DMControl<?>, List<InputValidator>> inputControls;
 		private boolean applyDefaultStyle = true;
+		private boolean fullView = false;
 
 		public DMFormBuilder(Pane formInputsPanel) {
 			this.formInputsPanel = formInputsPanel;
@@ -66,7 +68,7 @@ public class DMForm extends Pane {
 			this.formHeader = formHeader;
 			return this;
 		}
-		
+
 		public DMFormBuilder settingDialogInputHandler(DMSettingDialogInputHandler settingDialogInputHandler) {
 			this.settingDialogInputHandler = settingDialogInputHandler;
 			return this;
@@ -77,20 +79,23 @@ public class DMForm extends Pane {
 			return this;
 		}
 
-		public DMFormBuilder inputControls(
-				ObservableMap<DMControl<?>, List<InputValidator>> inputControls) {
+		public DMFormBuilder inputControls(ObservableMap<DMControl<?>, List<InputValidator>> inputControls) {
 			this.inputControls = inputControls;
 			return this;
 		}
 
-		public DMFormBuilder formHeaderControls(
-				ObservableList<Node> formHeaderControls) {
+		public DMFormBuilder formHeaderControls(ObservableList<Node> formHeaderControls) {
 			this.formHeaderControls = formHeaderControls;
 			return this;
 		}
 
 		public DMFormBuilder applyDefaultStyle(boolean applyDefaultStyle) {
 			this.applyDefaultStyle = applyDefaultStyle;
+			return this;
+		}
+
+		public DMFormBuilder fullView(boolean fullView) {
+			this.fullView = fullView;
 			return this;
 		}
 	}
@@ -106,6 +111,11 @@ public class DMForm extends Pane {
 	private void createForm() {
 		this.addRootThemeStyleSheet();
 		BorderPane borderPane = new BorderPane();
+
+		if (this.builder.fullView) {
+			borderPane.setPrefWidth(SizeHelper.FORM_PANEL_FULL_VIEW_SIZE.getWidth());
+			borderPane.setPrefHeight(SizeHelper.FORM_PANEL_FULL_VIEW_SIZE.getHeight());
+		}
 
 		if (this.builder.applyDefaultStyle) {
 			borderPane.getStyleClass().add("dm-form");
@@ -128,7 +138,7 @@ public class DMForm extends Pane {
 		this.subscribeOnThemeChange();
 
 		KeyCombination ctrlS = new KeyCodeCombination(KeyCode.S, KeyCombination.CONTROL_DOWN);
-		
+
 		this.setOnKeyPressed(event -> {
 			if (ctrlS.match(event) && builder.toolBarBuilder != null
 					&& builder.toolBarBuilder.getToolBarEvent() != null) {
@@ -152,33 +162,29 @@ public class DMForm extends Pane {
 
 	private void addRootThemeStyleSheet() {
 		this.getStylesheets().clear();
-		this.getStylesheets().add(
-				getClass().getResource("Form.css").toExternalForm());
-		this.getStylesheets().add(
-				getClass().getResource(
-						ControlsTheme.getThemeCssFileName("Form"))
-						.toExternalForm());
+		this.getStylesheets().add(getClass().getResource("Form.css").toExternalForm());
+		this.getStylesheets().add(getClass().getResource(ControlsTheme.getThemeCssFileName("Form")).toExternalForm());
 	}
 
 	private Pane getHeader(String formHeader) {
 		BorderPane headerPane = new BorderPane();
 		headerPane.setPadding(new Insets(0, 0, 10, 0));
 
-		FXLabelCmp header = new FXLabelCmp(new DMLabelBuilder().label(
-				formHeader).classNames(new String[] { "heading1" }));
-		
+		FXLabelCmp header = new FXLabelCmp(
+				new DMLabelBuilder().label(formHeader).classNames(new String[] { "heading1" }));
+
 		HBox headerItemsPanel = new HBox(20);
 		headerItemsPanel.getChildren().add(header);
-		
-		if(this.builder.settingDialogInputHandler != null) {
+
+		if (this.builder.settingDialogInputHandler != null) {
 			DMSettingDialogCmp settingDialogCmp = new DMSettingDialogCmp(this.builder.settingDialogInputHandler);
-			
+
 			headerItemsPanel.getChildren().add(settingDialogCmp);
 		}
-		
+
 		BorderPane.setAlignment(headerItemsPanel, Pos.CENTER);
 		headerPane.setLeft(headerItemsPanel);
-		
+
 		if (this.builder.formHeaderControls != null) {
 			HBox box = new HBox();
 			box.setAlignment(Pos.CENTER);
@@ -205,8 +211,7 @@ public class DMForm extends Pane {
 	}
 
 	public void addValidation(DMControl<?> control, InputValidator validator) {
-		List<InputValidator> inputValidators = this.builder.inputControls
-				.get(control);
+		List<InputValidator> inputValidators = this.builder.inputControls.get(control);
 		if (inputValidators == null) {
 			inputValidators = new ArrayList<InputValidator>();
 			this.builder.inputControls.put(control, inputValidators);
@@ -221,15 +226,13 @@ public class DMForm extends Pane {
 		}
 
 		for (DMControl<?> control : this.builder.inputControls.keySet()) {
-			List<InputValidator> validators = this.builder.inputControls
-					.get(control);
+			List<InputValidator> validators = this.builder.inputControls.get(control);
 
 			if (validators == null) {
 				continue;
 			}
 
-			boolean invalidInput = validators.stream().anyMatch(
-					validator -> !this.isValidInput(control, validator));
+			boolean invalidInput = validators.stream().anyMatch(validator -> !this.isValidInput(control, validator));
 			if (invalidInput) {
 				return false;
 			}
@@ -253,8 +256,7 @@ public class DMForm extends Pane {
 		case REQUIRED:
 			if (value == null) {
 				valid = false;
-			} else if (value instanceof String
-					&& ((String) value).trim().length() == 0) {
+			} else if (value instanceof String && ((String) value).trim().length() == 0) {
 				valid = false;
 			} else if (value instanceof ReferenceModel
 					&& ((ReferenceModel) value) == ConstantUtils.COMBO_SELECT_REF_MODEL) {
@@ -286,21 +288,16 @@ public class DMForm extends Pane {
 
 		if (!valid) {
 			FXMessageBox.getInstance().show(
-					new FXMessageBoxBuilder(validator.getErrorMessage()).title(
-							"app.error").alertType(AlertType.ERROR));
+					new FXMessageBoxBuilder(validator.getErrorMessage()).title("app.error").alertType(AlertType.ERROR));
 			UIHelper.setFocus(control.getControl());
 		} else {
-			if (control instanceof FXDualTextInputCmp
-					&& !UIHelper.canHideTranslatorField()) {
+			if (control instanceof FXDualTextInputCmp && !UIHelper.canHideTranslatorField()) {
 				FXDualTextInputCmp dualTextInputCmp = (FXDualTextInputCmp) control;
 				String translatorValue = dualTextInputCmp.getTranslatorValue();
-				if (translatorValue == null
-						|| translatorValue.trim().length() == 0) {
+				if (translatorValue == null || translatorValue.trim().length() == 0) {
 					valid = false;
-					FXMessageBox.getInstance()
-							.show(new FXMessageBoxBuilder(validator
-									.getErrorMessage()).title("app.error")
-									.alertType(AlertType.ERROR));
+					FXMessageBox.getInstance().show(new FXMessageBoxBuilder(validator.getErrorMessage())
+							.title("app.error").alertType(AlertType.ERROR));
 					UIHelper.setFocus(dualTextInputCmp.getTranslatorControl());
 				}
 			}

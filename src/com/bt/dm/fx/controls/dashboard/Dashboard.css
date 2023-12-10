@@ -32,3 +32,14 @@
 .small-font-menu {
 	-fx-font-size: 20px !important;
 }
+.dm-list-box {
+	-fx-background-color: #ffffff;
+}
+
+.dm-list-box-container {
+	-fx-padding: 15 0 15 15;
+	-fx-background-color: #ffffff;
+	-fx-border-width: 1;
+	-fx-border-radius: 8;
+	-fx-background-radius: 8;
+}

@@ -45,6 +45,7 @@ import com.bt.dm.fx.controls.table.model.FXTableColumnModel;
 import com.bt.dm.fx.controls.table.renderer.CheckBoxCellRenderer;
 import com.bt.dm.fx.controls.table.renderer.IconCellRenderer;
 import com.bt.dm.fx.controls.theme.ControlsTheme;
+import com.bt.dm.fx.controls.utils.SizeHelper;
 import com.bt.dm.fx.controls.utils.UIHelper;
 
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
@@ -78,9 +79,9 @@ public class FXTableView<S extends DMTableModel> extends Pane {
 		private Double editIconColumnWidth;
 		private Double deleteIconColumnWidth;
 		private DMSearchDialogInputHandler searchDialogInputHandler;
+		private boolean fullView = false;
 
-		public FXTableViewBuilder(
-				ObservableList<FxTableColumnSizeMapper<S>> columnSizeMapperList) {
+		public FXTableViewBuilder(ObservableList<FxTableColumnSizeMapper<S>> columnSizeMapperList) {
 			this.columnSizeMapperList = columnSizeMapperList;
 		}
 
@@ -110,8 +111,7 @@ public class FXTableView<S extends DMTableModel> extends Pane {
 			return this;
 		}
 
-		public FXTableViewBuilder<S> tableHeaderControls(
-				ObservableList<Node> tableHeaderControls) {
+		public FXTableViewBuilder<S> tableHeaderControls(ObservableList<Node> tableHeaderControls) {
 			this.tableHeaderControls = tableHeaderControls;
 			return this;
 		}
@@ -166,33 +166,33 @@ public class FXTableView<S extends DMTableModel> extends Pane {
 			return this;
 		}
 
-		public FXTableViewBuilder<S> showRowCheckColumn(
-				boolean showRowCheckColumn) {
+		public FXTableViewBuilder<S> showRowCheckColumn(boolean showRowCheckColumn) {
 			this.showRowCheckColumn = showRowCheckColumn;
 			return this;
 		}
 
-		public FXTableViewBuilder<S> checkBoxColumnWidth(
-				Double checkBoxColumnWidth) {
+		public FXTableViewBuilder<S> checkBoxColumnWidth(Double checkBoxColumnWidth) {
 			this.checkBoxColumnWidth = checkBoxColumnWidth;
 			return this;
 		}
 
-		public FXTableViewBuilder<S> deleteIconColumnWidth(
-				Double deleteIconColumnWidth) {
+		public FXTableViewBuilder<S> deleteIconColumnWidth(Double deleteIconColumnWidth) {
 			this.deleteIconColumnWidth = deleteIconColumnWidth;
 			return this;
 		}
 
-		public FXTableViewBuilder<S> editIconColumnWidth(
-				Double editIconColumnWidth) {
+		public FXTableViewBuilder<S> editIconColumnWidth(Double editIconColumnWidth) {
 			this.editIconColumnWidth = editIconColumnWidth;
 			return this;
 		}
-		
-		public FXTableViewBuilder<S> searchDialogInputHandler(
-				DMSearchDialogInputHandler searchDialogInputHandler) {
+
+		public FXTableViewBuilder<S> searchDialogInputHandler(DMSearchDialogInputHandler searchDialogInputHandler) {
 			this.searchDialogInputHandler = searchDialogInputHandler;
+			return this;
+		}
+
+		public FXTableViewBuilder<S> fullView(boolean fullView) {
+			this.fullView = fullView;
 			return this;
 		}
 	}
@@ -209,24 +209,25 @@ public class FXTableView<S extends DMTableModel> extends Pane {
 	private void createComponent() {
 		this.addRootThemeStyleSheet();
 
-		this.table = new FXTable<S>(new FXTableBuilder<S>(
-				this.builder.columnSizeMapperList).data(this.builder.data)
-				.miniTable(this.builder.miniTable)
-				.tableActions(this.builder.tableActions)
-				.showEditIcon(this.builder.showEditIcon)
-				.showDeleteIcon(this.builder.showDeleteIcon)
-				.showRowCheck(this.builder.showRowCheckColumn)
-				.equalColumnWidth(this.builder.equalColumnWidth)
+		this.table = new FXTable<S>(new FXTableBuilder<S>(this.builder.columnSizeMapperList).data(this.builder.data)
+				.miniTable(this.builder.miniTable).tableActions(this.builder.tableActions)
+				.showEditIcon(this.builder.showEditIcon).showDeleteIcon(this.builder.showDeleteIcon)
+				.showRowCheck(this.builder.showRowCheckColumn).equalColumnWidth(this.builder.equalColumnWidth)
 				.checkBoxColumnWidth(this.builder.checkBoxColumnWidth)
 				.editIconColumnWidth(this.builder.editIconColumnWidth)
 				.deleteIconColumnWidth(this.builder.deleteIconColumnWidth));
 
-		if (this.builder.height != null) {
-			this.table.setPrefHeight(this.builder.height);
-		}
+		if (this.builder.fullView) {
+			this.table.setPrefWidth(SizeHelper.TABLE_PANEL_FULL_VIEW_SIZE.getWidth());
+			this.table.setPrefHeight(SizeHelper.TABLE_PANEL_FULL_VIEW_SIZE.getHeight());
+		} else {
+			if (this.builder.height != null) {
+				this.table.setPrefHeight(this.builder.height);
+			}
 
-		if (this.builder.width != null) {
-			this.setTableWidth(this.builder.width);
+			if (this.builder.width != null) {
+				this.setTableWidth(this.builder.width);
+			}
 		}
 
 		VBox root = new VBox();
@@ -234,11 +235,9 @@ public class FXTableView<S extends DMTableModel> extends Pane {
 		root.setSpacing(10);
 
 		// Table header pane
-		if (this.builder.showTableToolbar
-				&& (this.builder.header != null || this.builder.enableSearch
-						|| this.builder.enableDataReport
-						|| this.builder.enableExcelExport
-						|| this.builder.enablePdfExport || this.builder.tableHeaderControls != null)) {
+		if (this.builder.showTableToolbar && (this.builder.header != null || this.builder.enableSearch
+				|| this.builder.enableDataReport || this.builder.enableExcelExport || this.builder.enablePdfExport
+				|| this.builder.tableHeaderControls != null)) {
 			root.getChildren().add(this.getTableHeaderPane());
 		}
 
@@ -267,13 +266,11 @@ public class FXTableView<S extends DMTableModel> extends Pane {
 		this.table.clearTableRecords();
 	}
 
-	public void addTableColumns(
-			ObservableList<FxTableColumnSizeMapper<S>> columnSizeMapperList) {
+	public void addTableColumns(ObservableList<FxTableColumnSizeMapper<S>> columnSizeMapperList) {
 		this.table.addTableColumns(columnSizeMapperList);
 	}
 
-	public void updateColumnHeader(String newHeader, boolean readFromLocale,
-			String propertyName) {
+	public void updateColumnHeader(String newHeader, boolean readFromLocale, String propertyName) {
 		this.table.updateColumnHeader(newHeader, readFromLocale, propertyName);
 	}
 
@@ -286,8 +283,7 @@ public class FXTableView<S extends DMTableModel> extends Pane {
 	}
 
 	public S getTableRecord(int rowIndex) {
-		return rowIndex >= 0 && rowIndex < this.table.getItems().size() ? this.table
-				.getItems().get(rowIndex) : null;
+		return rowIndex >= 0 && rowIndex < this.table.getItems().size() ? this.table.getItems().get(rowIndex) : null;
 	}
 
 	public ObservableList<S> getTableRecords() {
@@ -297,7 +293,7 @@ public class FXTableView<S extends DMTableModel> extends Pane {
 	public int getNoOfRecords() {
 		return this.table.getItems().size();
 	}
-	
+
 	public TableViewSelectionModel<S> getSelectionModel() {
 		return this.table.getSelectionModel();
 	}
@@ -308,8 +304,7 @@ public class FXTableView<S extends DMTableModel> extends Pane {
 		headerPane.setPadding(new Insets(10));
 		// Header
 		if (this.builder.header != null) {
-			FXLabelCmp title = new FXLabelCmp(new DMLabelBuilder().label(
-					this.builder.header).h3(true));
+			FXLabelCmp title = new FXLabelCmp(new DMLabelBuilder().label(this.builder.header).h3(true));
 			BorderPane.setAlignment(title, Pos.CENTER);
 			headerPane.setLeft(title);
 		}
@@ -327,35 +322,31 @@ public class FXTableView<S extends DMTableModel> extends Pane {
 
 			box.getChildren().addAll(searchDialogCmp);
 		}
-		
+
 		if (builder.enableSearch) {
 			DMSearchCmp searchCmp = new DMSearchCmp();
 			box.getChildren().add(searchCmp);
 		}
 
 		if (builder.enableDataReport) {
-			FXMaterialDesignIcon reportIconButton = this
-					.createDataExportIcon(MaterialDesignIcon.FILE);
+			FXMaterialDesignIcon reportIconButton = this.createDataExportIcon(MaterialDesignIcon.FILE);
 			box.getChildren().add(reportIconButton);
 		}
 
 		if (builder.enableExcelExport) {
-			FXMaterialDesignIcon excelIconButton = this
-					.createDataExportIcon(MaterialDesignIcon.FILE_EXCEL);
+			FXMaterialDesignIcon excelIconButton = this.createDataExportIcon(MaterialDesignIcon.FILE_EXCEL);
 			box.getChildren().add(excelIconButton);
 		}
 
 		if (builder.enablePdfExport) {
-			FXMaterialDesignIcon pdfIconButton = this
-					.createDataExportIcon(MaterialDesignIcon.FILE_PDF);
+			FXMaterialDesignIcon pdfIconButton = this.createDataExportIcon(MaterialDesignIcon.FILE_PDF);
 
 			box.getChildren().addAll(pdfIconButton);
 		}
-		
+
 		if (builder.miniTable) {
 			FXFontAwesomeIcon maximizeWindowIcon = new FXFontAwesomeIcon(
-					new FXFontAwesomeIconBuilder(FontAwesomeIcon.EXTERNAL_LINK)
-							.size("28px").className("maximize-icon")
+					new FXFontAwesomeIconBuilder(FontAwesomeIcon.EXTERNAL_LINK).size("28px").className("maximize-icon")
 							.faIconClickEvent(new IconClickEvent() {
 
 								@Override
@@ -375,14 +366,13 @@ public class FXTableView<S extends DMTableModel> extends Pane {
 
 	private FXMaterialDesignIcon createDataExportIcon(MaterialDesignIcon icon) {
 		FXMaterialDesignIcon iconButton = new FXMaterialDesignIcon(
-				new FXMaterialDesignIconBuilder(icon).size("28px")
-						.iconClickEvent(new IconClickEvent() {
+				new FXMaterialDesignIconBuilder(icon).size("28px").iconClickEvent(new IconClickEvent() {
 
-							@Override
-							public void onClick(Event event) {
-								onDataExportIconClick(icon);
-							}
-						}));
+					@Override
+					public void onClick(Event event) {
+						onDataExportIconClick(icon);
+					}
+				}));
 		iconButton.getStyleClass().add("export-icon");
 
 		return iconButton;
@@ -418,12 +408,8 @@ public class FXTableView<S extends DMTableModel> extends Pane {
 
 	private void addRootThemeStyleSheet() {
 		this.getStylesheets().clear();
-		this.getStylesheets().add(
-				getClass().getResource("Table.css").toExternalForm());
-		this.getStylesheets().add(
-				getClass().getResource(
-						ControlsTheme.getThemeCssFileName("Table"))
-						.toExternalForm());
+		this.getStylesheets().add(getClass().getResource("Table.css").toExternalForm());
+		this.getStylesheets().add(getClass().getResource(ControlsTheme.getThemeCssFileName("Table")).toExternalForm());
 	}
 }
 
@@ -441,8 +427,7 @@ class FXTable<S extends DMTableModel> extends TableView<S> {
 		private Double editIconColumnWidth;
 		private Double deleteIconColumnWidth;
 
-		public FXTableBuilder(
-				ObservableList<FxTableColumnSizeMapper<S>> columnSizeMapperList) {
+		public FXTableBuilder(ObservableList<FxTableColumnSizeMapper<S>> columnSizeMapperList) {
 			this.columnSizeMapperList = columnSizeMapperList;
 		}
 
@@ -486,8 +471,7 @@ class FXTable<S extends DMTableModel> extends TableView<S> {
 			return this;
 		}
 
-		public FXTableBuilder<S> deleteIconColumnWidth(
-				Double deleteIconColumnWidth) {
+		public FXTableBuilder<S> deleteIconColumnWidth(Double deleteIconColumnWidth) {
 			this.deleteIconColumnWidth = deleteIconColumnWidth;
 			return this;
 		}
@@ -508,22 +492,18 @@ class FXTable<S extends DMTableModel> extends TableView<S> {
 
 	private void createComponent() {
 		// Set placeholder when no data available
-		this.setPlaceholder(new FXLabelCmp(new DMLabelBuilder()
-				.label("app.report.noDataAvailable")));
+		this.setPlaceholder(new FXLabelCmp(new DMLabelBuilder().label("app.report.noDataAvailable")));
 
 		// Show check column
 		if (this.builder.showRowCheck) {
 			this.selectAllCheckProperty = new SimpleBooleanProperty();
 
 			this.setEditable(true);
-			FXTableColumnModel<S, Boolean> selectColumn = new FXTableColumnModel<S, Boolean>(
-					"", "select");
+			FXTableColumnModel<S, Boolean> selectColumn = new FXTableColumnModel<S, Boolean>("", "select");
 
-			selectColumn.setCellValueFactory(model -> model.getValue()
-					.checkedProperty());
+			selectColumn.setCellValueFactory(model -> model.getValue().checkedProperty());
 
-			selectColumn.setCellFactory(c -> new CheckBoxCellRenderer<S>((
-					selectedRowIndex, value) -> {
+			selectColumn.setCellFactory(c -> new CheckBoxCellRenderer<S>((selectedRowIndex, value) -> {
 				if (selectedRowIndex >= 0) {
 					S record = this.getItems().get(selectedRowIndex);
 					record.checkedProperty().setValue(value);
@@ -532,15 +512,13 @@ class FXTable<S extends DMTableModel> extends TableView<S> {
 						selectAllCheckProperty.setValue(false);
 					}
 
-					this.builder.tableActions.onRowCheckBoxSelected(value,
-							record);
+					this.builder.tableActions.onRowCheckBoxSelected(value, record);
 
 				}
 			}));
 
 			CheckBox selectAllBox = new CheckBox();
-			selectAllBox.selectedProperty().bindBidirectional(
-					selectAllCheckProperty);
+			selectAllBox.selectedProperty().bindBidirectional(selectAllCheckProperty);
 			selectAllBox.setFocusTraversable(false);
 			selectAllBox.setOnAction(e -> {
 				boolean selected = selectAllBox.isSelected();
@@ -548,85 +526,67 @@ class FXTable<S extends DMTableModel> extends TableView<S> {
 					record.checkedProperty().set(selected);
 				});
 
-				this.builder.tableActions.onAllRowsCheckBoxClicked(selected,
-						selected ? this.getItems() : null);
+				this.builder.tableActions.onAllRowsCheckBoxClicked(selected, selected ? this.getItems() : null);
 			});
 
 			selectColumn.setGraphic(selectAllBox);
 
-			double width = this.builder.checkBoxColumnWidth == null ? 1
-					: this.builder.checkBoxColumnWidth;
-			FxTableColumnSizeMapper<S> selectColumnWrapper = new FxTableColumnSizeMapper<S>(
-					selectColumn, width);
+			double width = this.builder.checkBoxColumnWidth == null ? 1 : this.builder.checkBoxColumnWidth;
+			FxTableColumnSizeMapper<S> selectColumnWrapper = new FxTableColumnSizeMapper<S>(selectColumn, width);
 			this.builder.columnSizeMapperList.add(0, selectColumnWrapper);
 		}
 
 		// Show edit icon
 		if (this.builder.showEditIcon) {
-			FXTableColumnModel<S, MaterialDesignIcon> editColumn = new FXTableColumnModel<S, MaterialDesignIcon>(
-					null, "edit");
-			editColumn.setCellFactory(c -> new IconCellRenderer<S>(
-					MaterialDesignIcon.PENCIL, new TableCellClickEvent() {
+			FXTableColumnModel<S, MaterialDesignIcon> editColumn = new FXTableColumnModel<S, MaterialDesignIcon>(null,
+					"edit");
+			editColumn
+					.setCellFactory(c -> new IconCellRenderer<S>(MaterialDesignIcon.PENCIL, new TableCellClickEvent() {
 
 						@Override
 						public void onCellClick(int selectedRowIndex) {
 							if (builder.tableActions != null) {
-								int columnIndex = getColumns().indexOf(
-										editColumn);
-								builder.tableActions.onEditClick(
-										getSelectionModel().getSelectedItem(),
+								int columnIndex = getColumns().indexOf(editColumn);
+								builder.tableActions.onEditClick(getSelectionModel().getSelectedItem(),
 										selectedRowIndex, columnIndex);
 							}
 						}
 					}));
 
-			double width = this.builder.editIconColumnWidth == null ? 0.07
-					: this.builder.editIconColumnWidth;
+			double width = this.builder.editIconColumnWidth == null ? 0.07 : this.builder.editIconColumnWidth;
 
-			FxTableColumnSizeMapper<S> editColumnSizeMapper = new FxTableColumnSizeMapper<S>(
-					editColumn, 0.05, true, width);
+			FxTableColumnSizeMapper<S> editColumnSizeMapper = new FxTableColumnSizeMapper<S>(editColumn, 0.05, true,
+					width);
 			this.builder.columnSizeMapperList.add(editColumnSizeMapper);
 		}
 
 		// Show delete icon
 		if (this.builder.showDeleteIcon) {
-			FXTableColumnModel<S, MaterialDesignIcon> deleteColumn = new FXTableColumnModel<S, MaterialDesignIcon>(
-					null, "delete");
-			deleteColumn.setCellFactory(column -> new IconCellRenderer<S>(
-					MaterialDesignIcon.DELETE, new TableCellClickEvent() {
+			FXTableColumnModel<S, MaterialDesignIcon> deleteColumn = new FXTableColumnModel<S, MaterialDesignIcon>(null,
+					"delete");
+			deleteColumn.setCellFactory(
+					column -> new IconCellRenderer<S>(MaterialDesignIcon.DELETE, new TableCellClickEvent() {
 
 						@Override
 						public void onCellClick(int selectedRowIndex) {
-							FXMessageBox messageBox = FXMessageBox
-									.getInstance();
+							FXMessageBox messageBox = FXMessageBox.getInstance();
 							messageBox
-									.show(new FXMessageBoxBuilder(
-											"app.record.delete.confirm").title(
-											"app.confirm").alertType(
-											AlertType.CONFIRMATION))
-									.filter(response -> response == UIHelper.ALERT_OK_BUTTON)
-									.ifPresent(
-											response -> {
-												if (builder.tableActions != null) {
-													int columnIndex = getColumns()
-															.indexOf(
-																	deleteColumn);
-													builder.tableActions
-															.onDeleteClick(
-																	getSelectionModel()
-																			.getSelectedItem(),
-																	selectedRowIndex,
-																	columnIndex);
-												}
-											});
+									.show(new FXMessageBoxBuilder("app.record.delete.confirm").title("app.confirm")
+											.alertType(AlertType.CONFIRMATION))
+									.filter(response -> response == UIHelper.ALERT_OK_BUTTON).ifPresent(response -> {
+										if (builder.tableActions != null) {
+											int columnIndex = getColumns().indexOf(deleteColumn);
+											builder.tableActions.onDeleteClick(getSelectionModel().getSelectedItem(),
+													selectedRowIndex, columnIndex);
+										}
+									});
 						}
 					}));
 
-			double width = this.builder.deleteIconColumnWidth == null ? 0.07
-					: this.builder.deleteIconColumnWidth;
+			double width = this.builder.deleteIconColumnWidth == null ? 0.07 : this.builder.deleteIconColumnWidth;
 
-			FxTableColumnSizeMapper<S> deleteColumnSizeMapper = new FxTableColumnSizeMapper<S>(
-					deleteColumn, 0.05, true, width);
+			FxTableColumnSizeMapper<S> deleteColumnSizeMapper = new FxTableColumnSizeMapper<S>(deleteColumn, 0.05, true,
+					width);
 			this.builder.columnSizeMapperList.add(deleteColumnSizeMapper);
 		}
 
@@ -642,8 +602,8 @@ class FXTable<S extends DMTableModel> extends TableView<S> {
 	}
 
 	public void addRecords(ObservableList<S> records) {
-		if(DMCollectionUtils.notEmptyOrNull(records)) {
-			this.getItems().addAll(records);	
+		if (DMCollectionUtils.notEmptyOrNull(records)) {
+			this.getItems().addAll(records);
 		}
 	}
 
@@ -651,8 +611,7 @@ class FXTable<S extends DMTableModel> extends TableView<S> {
 		this.getItems().clear();
 	}
 
-	public void addTableColumns(
-			ObservableList<FxTableColumnSizeMapper<S>> columnSizeMapperList) {
+	public void addTableColumns(ObservableList<FxTableColumnSizeMapper<S>> columnSizeMapperList) {
 		if (DMCollectionUtils.isEmptyOrNull(columnSizeMapperList)) {
 			return;
 		}
@@ -665,13 +624,11 @@ class FXTable<S extends DMTableModel> extends TableView<S> {
 		});
 	}
 
-	public void updateColumnHeader(String newHeader, boolean readFromLocale,
-			String propertyName) {
+	public void updateColumnHeader(String newHeader, boolean readFromLocale, String propertyName) {
 		if (DMCollectionUtils.notEmptyOrNull(this.getColumns())) {
 			for (TableColumn<S, ?> column : this.getColumns()) {
 				if (column.getId().equalsIgnoreCase(propertyName)) {
-					((FXTableColumnModel<S, ?>) column).updateHeader(newHeader,
-							readFromLocale);
+					((FXTableColumnModel<S, ?>) column).updateHeader(newHeader, readFromLocale);
 					break;
 				}
 			}
@@ -683,55 +640,33 @@ class FXTable<S extends DMTableModel> extends TableView<S> {
 	}
 
 	public void resizeColumns() {
-		this.builder.columnSizeMapperList
-				.stream()
-				.forEach(
-						mapper -> {
-							if ((this.builder.miniTable && mapper
-									.getColWidthPercentageInMiniTable() == null)
-									|| (!this.builder.miniTable
-											&& mapper.getColWidthPercentage() == null && mapper
-											.getFxTableColumnModel()
-											.getColumns().size() == 0)) {
-								return;
-							}
-							if (this.builder.miniTable) {
-								if (mapper.isShowInMiniTable()) {
-									mapper.getFxTableColumnModel()
-											.prefWidthProperty()
-											.bind(this
-													.prefWidthProperty()
-													.multiply(
-															mapper.getColWidthPercentageInMiniTable()));
-								}
-							} else {
-								if (mapper.getFxTableColumnModel().getColumns()
-										.size() > 0) {
-									for (TableColumn<S, ?> column : mapper
-											.getFxTableColumnModel()
-											.getColumns()) {
-										FXTableColumnModel<S, ?> fxTableColumn = (FXTableColumnModel<S, ?>) column;
-										Double width = fxTableColumn
-												.getColWidthPercentage();
+		this.builder.columnSizeMapperList.stream().forEach(mapper -> {
+			if ((this.builder.miniTable && mapper.getColWidthPercentageInMiniTable() == null)
+					|| (!this.builder.miniTable && mapper.getColWidthPercentage() == null
+							&& mapper.getFxTableColumnModel().getColumns().size() == 0)) {
+				return;
+			}
+			if (this.builder.miniTable) {
+				if (mapper.isShowInMiniTable()) {
+					mapper.getFxTableColumnModel().prefWidthProperty()
+							.bind(this.prefWidthProperty().multiply(mapper.getColWidthPercentageInMiniTable()));
+				}
+			} else {
+				if (mapper.getFxTableColumnModel().getColumns().size() > 0) {
+					for (TableColumn<S, ?> column : mapper.getFxTableColumnModel().getColumns()) {
+						FXTableColumnModel<S, ?> fxTableColumn = (FXTableColumnModel<S, ?>) column;
+						Double width = fxTableColumn.getColWidthPercentage();
 
-										if (width != null) {
-											fxTableColumn
-													.prefWidthProperty()
-													.bind(this
-															.prefWidthProperty()
-															.multiply(width));
-										}
-									}
+						if (width != null) {
+							fxTableColumn.prefWidthProperty().bind(this.prefWidthProperty().multiply(width));
+						}
+					}
 
-								} else if (mapper.getColWidthPercentage() != null) {
-									mapper.getFxTableColumnModel()
-											.prefWidthProperty()
-											.bind(this
-													.prefWidthProperty()
-													.multiply(
-															mapper.getColWidthPercentage()));
-								}
-							}
-						});
+				} else if (mapper.getColWidthPercentage() != null) {
+					mapper.getFxTableColumnModel().prefWidthProperty()
+							.bind(this.prefWidthProperty().multiply(mapper.getColWidthPercentage()));
+				}
+			}
+		});
 	}
 }

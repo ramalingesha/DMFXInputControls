@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import com.bt.dm.core.utils.DMCollectionUtils;
@@ -14,6 +15,7 @@ import com.bt.dm.fx.controls.events.IconClickEvent;
 import com.bt.dm.fx.controls.labels.FXLabelCmp;
 import com.bt.dm.fx.controls.labels.FXMaterialDesignIcon;
 import com.bt.dm.fx.controls.labels.FXMaterialDesignIcon.FXMaterialDesignIconBuilder;
+import com.bt.dm.fx.controls.table.model.DMStaticTableColumnFooterModel;
 import com.bt.dm.fx.controls.table.model.DMStaticTableColumnModel;
 import com.bt.dm.fx.controls.table.model.DMStaticTableDataModel;
 import com.bt.dm.fx.controls.utils.SizeHelper;
@@ -45,27 +47,29 @@ public class DMStaticTableView extends DMView {
 	private List<DMStaticTableColumnModel> columnModels;
 	private Double tableHeight;
 	private VBox tableDataPane;
+	private HBox tableColumnsPane;
+	private HBox columnsFooterPane;
 	private ScrollPane tableDataScrollPane;
 	private boolean crossTable;
 	private boolean enableScrollBar;
-	
+
 	private final double TABLE_DATA_CONTAINER_HEIGHT = SizeHelper.MAIN_PANEL_SIZE.getHeight() - 230;
 	private Map<String, List<Object>> tableDataObjects;
 
 	public DMStaticTableView(List<DMStaticTableColumnModel> columnModels) {
 		this(columnModels, null);
 	}
-	
+
 	public DMStaticTableView(List<DMStaticTableColumnModel> columnModels, Double tableHeight) {
 		this.columnModels = columnModels;
 		this.tableHeight = tableHeight == null ? TABLE_DATA_CONTAINER_HEIGHT : tableHeight;
 	}
-	
+
 	public DMStaticTableView crossTable(boolean crossTable) {
 		this.crossTable = crossTable;
 		return this;
 	}
-	
+
 	public DMStaticTableView enableScrollBar(boolean enableScrollBar) {
 		this.enableScrollBar = enableScrollBar;
 		return this;
@@ -76,8 +80,11 @@ public class DMStaticTableView extends DMView {
 		VBox tableContainer = new VBox(3);
 		tableContainer.getStyleClass().add("table-view");
 
-		Pane tableColumnsPane = this.getColumnHeaders();
+		tableColumnsPane = new HBox(1);
+		columnsFooterPane = new HBox(1);
 		tableDataPane = new VBox(3);
+
+		this.renderColumnHeaders();
 
 		KeyFrame keyFrame1 = new KeyFrame(Duration.millis(10), e -> {
 			double width = tableColumnsPane.getBoundsInLocal().getWidth();
@@ -87,39 +94,74 @@ public class DMStaticTableView extends DMView {
 
 		Platform.runLater(timeline::play);
 
-		if(this.enableScrollBar) {
+		tableContainer.getChildren().add(tableColumnsPane);
+
+		if (this.enableScrollBar) {
 			tableDataScrollPane = new ScrollPane(tableDataPane);
 			tableDataScrollPane.setPrefHeight(this.tableHeight);
 			tableDataScrollPane.setHbarPolicy(ScrollBarPolicy.NEVER);
-			
-			tableContainer.getChildren().addAll(tableColumnsPane, tableDataScrollPane);
+
+			tableContainer.getChildren().addAll(tableDataScrollPane);
 		} else {
-			tableContainer.getChildren().addAll(tableColumnsPane, tableDataPane);			
+			tableContainer.getChildren().addAll(tableDataPane);
 		}
-		
+
+		tableContainer.getChildren().add(columnsFooterPane);
+
 		return tableContainer;
 	}
 
-	private Pane getColumnHeaders() {
-		HBox box = new HBox(1);
+	private void renderColumnHeaders() {
+		this.tableColumnsPane.getChildren().clear();
 
-		if (DMCollectionUtils.isEmptyOrNull(columnModels)) {
-			return box;
+		if (DMCollectionUtils.isEmptyOrNull(this.columnModels)) {
+			return;
 		}
 
-		DMStaticTableColumnModel firstColumnModel = columnModels.get(0);
+		DMStaticTableColumnModel firstColumnModel = this.columnModels.get(0);
 
-		box.getChildren().add(this.createColumnHeader(firstColumnModel.getColumnHeader(), firstColumnModel.isI18n(),
-				this.crossTable ? "no-color" : firstColumnModel.getClassName(), firstColumnModel.getWidth()));
+		this.tableColumnsPane.getChildren()
+				.add(this.createColumnHeader(firstColumnModel.getColumnHeader(), firstColumnModel.isI18n(),
+						this.crossTable ? "no-color" : firstColumnModel.getClassName(), firstColumnModel.getWidth()));
 
-		if (columnModels.size() > 1) {
-			columnModels.subList(1, columnModels.size()).forEach(columnModel -> {
-				box.getChildren().add(this.createColumnHeader(columnModel.getColumnHeader(), columnModel.isI18n(),
-						columnModel.getClassName(), columnModel.getWidth()));
+		if (this.columnModels.size() > 1) {
+			this.columnModels.subList(1, this.columnModels.size()).forEach(columnModel -> {
+				this.tableColumnsPane.getChildren().add(this.createColumnHeader(columnModel.getColumnHeader(),
+						columnModel.isI18n(), columnModel.getClassName(), columnModel.getWidth()));
 			});
 		}
+	}
 
-		return box;
+	private void renderColumnFooters(List<DMStaticTableColumnFooterModel> footerModels) {
+		this.columnsFooterPane.getChildren().clear();
+
+		if (DMCollectionUtils.isEmptyOrNull(this.columnModels) || DMCollectionUtils.isEmptyOrNull(footerModels)) {
+			return;
+		}
+
+		Map<String, DMStaticTableColumnFooterModel> footersMap = footerModels.stream()
+				.collect(Collectors.toMap(DMStaticTableColumnFooterModel::getColumnId, Function.identity()));
+
+		this.columnModels.forEach(columnModel -> {
+			DMStaticTableColumnFooterModel footerModel = footersMap.get(columnModel.getColumnId());
+
+			if (footerModel == null) {
+				this.columnsFooterPane.getChildren()
+						.add(this.createColumnFooter("", false, null, columnModel.getWidth(), false));
+			} else {
+				this.columnsFooterPane.getChildren()
+						.add(this.createColumnFooter(footerModel.getFooterText(), footerModel.isI18n(),
+								footerModel.getClassName(), columnModel.getWidth(), footerModel.isRightAlign()));
+			}
+		});
+	}
+
+	public void renderTableData(List<DMStaticTableColumnModel> columnModels,
+			List<List<DMStaticTableDataModel>> dataModels, List<DMStaticTableColumnFooterModel> footerModels) {
+		this.columnModels = columnModels;
+		this.renderColumnHeaders();
+		this.renderTableData(dataModels);
+		this.renderColumnFooters(footerModels);
 	}
 
 	public void renderTableData(List<List<DMStaticTableDataModel>> dataModels) {
@@ -135,18 +177,18 @@ public class DMStaticTableView extends DMView {
 				if (columnDataMap == null || columnDataMap.isEmpty()) {
 					continue;
 				}
-				
+
 				String rowStyleClass = row++ % 2 == 0 ? "odd" : "even";
 
 				HBox rowPane = new HBox(6);
 				rowPane.getStyleClass().add(String.format("table-row-cell-%s", rowStyleClass));
 
-				for(DMStaticTableColumnModel columnModel: columnModels) {
+				for (DMStaticTableColumnModel columnModel : columnModels) {
 					String columnId = columnModel.getColumnId();
 					DMStaticTableDataModel model = columnDataMap.get(columnId);
 					List<Object> rowDataObjects = this.tableDataObjects.get(columnId);
-					
-					if(rowDataObjects == null) {
+
+					if (rowDataObjects == null) {
 						rowDataObjects = new ArrayList<>();
 						this.tableDataObjects.put(columnId, rowDataObjects);
 					}
@@ -155,7 +197,7 @@ public class DMStaticTableView extends DMView {
 						rowPane.getChildren().add(this.createRowCell("", false, columnModel.getWidth(), rowStyleClass,
 								null, false, false, null));
 						rowDataObjects.add("");
-						
+
 						continue;
 					}
 
@@ -191,9 +233,17 @@ public class DMStaticTableView extends DMView {
 		return header;
 	}
 
+	private Pane createColumnFooter(String text, boolean i18n, String className, double width, boolean rightAlign) {
+		Pane header = new Pane(this.createLabel(text, i18n, className, width, rightAlign));
+		header.getStyleClass().add("column-header");
+
+		return header;
+	}
+
 	private Pane createRowCell(String text, boolean i18n, double width, String rowStyleClass, String className,
 			boolean rightAlign, boolean showEditIcon, IconClickEvent editIconClickEvent) {
-		return this.createRowCell(text, i18n, null, width, rowStyleClass, className, rightAlign, showEditIcon, editIconClickEvent);
+		return this.createRowCell(text, i18n, null, width, rowStyleClass, className, rightAlign, showEditIcon,
+				editIconClickEvent);
 	}
 
 	private Pane createRowCell(StringProperty valueProperty, double width, String rowStyleClass, String className,
@@ -202,7 +252,8 @@ public class DMStaticTableView extends DMView {
 	}
 
 	private Pane createRowCell(String text, boolean i18n, StringProperty valueProperty, double width,
-			String rowStyleClass, String className, boolean rightAlign, boolean showEditIcon, IconClickEvent editIconClickEvent) {
+			String rowStyleClass, String className, boolean rightAlign, boolean showEditIcon,
+			IconClickEvent editIconClickEvent) {
 		FXLabelCmp labelCmp = this.createLabel(text, i18n, null, showEditIcon ? width - 20 : width);
 
 		if (valueProperty != null) {
@@ -216,21 +267,21 @@ public class DMStaticTableView extends DMView {
 		if (rightAlign) {
 			labelCmp.setAlignment(Pos.CENTER_RIGHT);
 		}
-		
+
 		Pane rowCell = new Pane();
-		
-		if(showEditIcon) {
+
+		if (showEditIcon) {
 			FXMaterialDesignIcon editIcon = new FXMaterialDesignIcon(
 					new FXMaterialDesignIconBuilder(MaterialDesignIcon.PENCIL).iconClickEvent(event -> {
-						if(editIconClickEvent != null) {
+						if (editIconClickEvent != null) {
 							editIconClickEvent.onClick(event);
 						}
 					}).size("1.5em"));
 			editIcon.setStyle("-fx-fill: #bc3672;");
-			
+
 			HBox box = new HBox(labelCmp, editIcon);
 			box.setAlignment(Pos.CENTER_LEFT);
-			
+
 			rowCell.getChildren().add(box);
 		} else {
 			rowCell.getChildren().add(labelCmp);
@@ -254,6 +305,10 @@ public class DMStaticTableView extends DMView {
 	}
 
 	private FXLabelCmp createLabel(String text, boolean i18n, String className, double width) {
+		return this.createLabel(text, i18n, className, width, false);
+	}
+
+	private FXLabelCmp createLabel(String text, boolean i18n, String className, double width, boolean rightAlign) {
 		DMLabelBuilder labelBuilder = new DMLabelBuilder().label(text).i18n(i18n);
 
 		if (!DMStringUtils.isEmpty(className)) {
@@ -261,6 +316,10 @@ public class DMStaticTableView extends DMView {
 		}
 
 		FXLabelCmp labelCmp = new FXLabelCmp(labelBuilder);
+
+		if (rightAlign) {
+			labelCmp.setAlignment(Pos.CENTER_RIGHT);
+		}
 
 		labelCmp.setPrefWidth(width);
 
@@ -281,31 +340,31 @@ public class DMStaticTableView extends DMView {
 			}
 		}
 	}
-	
+
 	public void focusInlineEditTextField(int row, int column) {
-		if(!this.enableScrollBar) {
+		if (!this.enableScrollBar) {
 			System.err.println("Scroll bar is not enabled");
 			return;
 		}
-		
+
 		ObservableList<Node> nodes = this.tableDataPane.getChildren();
-		
+
 		if (DMCollectionUtils.isEmptyOrNull(nodes)) {
 			return;
 		}
-		
+
 		HBox rowPane = (HBox) nodes.get(row);
-		
-		if(rowPane == null || (rowPane.getChildren().size() - 1) < column) {
+
+		if (rowPane == null || (rowPane.getChildren().size() - 1) < column) {
 			return;
 		}
-		
+
 		Node node = ((Pane) rowPane.getChildren().get(column)).getChildren().get(0);
-		
-		if(node instanceof Control) {
+
+		if (node instanceof Control) {
 			int noOfRows = nodes.size();
-			double vValue = row > (noOfRows - 8) ? 1.0 : (double) row/noOfRows;
-			
+			double vValue = row > (noOfRows - 8) ? 1.0 : (double) row / noOfRows;
+
 			Platform.runLater(() -> {
 				this.tableDataScrollPane.setVvalue(DMNumberUtils.getQuantityRoundOff(vValue));
 			});

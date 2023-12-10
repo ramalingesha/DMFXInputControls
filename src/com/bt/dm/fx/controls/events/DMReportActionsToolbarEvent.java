@@ -3,6 +3,8 @@
  */
 package com.bt.dm.fx.controls.events;
 
+import com.bt.dm.fx.controls.table.model.DMReportTableDataModel;
+
 /**
  * @author Ramalingesha ML
  *
@@ -16,4 +18,11 @@ public interface DMReportActionsToolbarEvent {
 	public void onExcelBtnClick();
 
 	public void onPdfBtnClick();
+
+	public default DMReportTableDataModel getReportData() {
+		return null;
+	}
+
+	public default void onCancelBtnClick() {
+	}
 }

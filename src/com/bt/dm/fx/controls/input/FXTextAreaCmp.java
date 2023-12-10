@@ -37,6 +37,7 @@ public class FXTextAreaCmp extends DMControl<Object> {
 		}
 
 		textAreaCmp = new TextArea(this.builder.getValue());
+		textAreaCmp.setWrapText(true);
 		textAreaCmp.setPromptText(this.builder.getPlaceHolder());
 		textAreaCmp.setEditable(!this.builder.isReadOnly());
 		textAreaCmp.setFocusTraversable(!this.builder.isReadOnly());

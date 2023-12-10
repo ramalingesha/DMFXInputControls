@@ -38,28 +38,41 @@ public class DMContextMenu extends Pane {
 
 		this.menuItems.forEach(menuItem -> {
 			List<DMMenuItem> subMenus = menuItem.getSubMenus();
-			
-			if(DMCollectionUtils.notEmptyOrNull(subMenus)) {
+
+			if (DMCollectionUtils.notEmptyOrNull(subMenus)) {
 				Menu menu = new Menu(DMMessageLocalizer.getLabel(menuItem.getMenuTitle()));
-				
+
 				subMenus.forEach(subMenu -> {
-					CustomMenuItem customMenuItem = new CustomMenuItem();
-					customMenuItem.setContent(subMenu);
-					
-					menu.getItems().add(customMenuItem);	
+					List<DMMenuItem> subMenus1 = subMenu.getSubMenus();
+
+					if (DMCollectionUtils.notEmptyOrNull(subMenus1)) {
+						Menu menu1 = new Menu(DMMessageLocalizer.getLabel(subMenu.getMenuTitle()));
+
+						subMenus1.forEach(subMenu1 -> {
+							CustomMenuItem customMenuItem = new CustomMenuItem();
+							customMenuItem.setContent(subMenu1);
+
+							menu1.getItems().add(customMenuItem);
+						});
+						
+						menu.getItems().add(menu1);
+					} else {
+						CustomMenuItem customMenuItem = new CustomMenuItem();
+						customMenuItem.setContent(subMenu);
+
+						menu.getItems().add(customMenuItem);
+					}
 				});
-				
+
 				this.contextMenu.getItems().add(menu);
 			} else {
 				CustomMenuItem customMenuItem = new CustomMenuItem();
 				customMenuItem.setContent(menuItem);
 				this.contextMenu.getItems().add(customMenuItem);
 			}
-
-			
 		});
 	}
-
+	
 	public void show(Node parentMenu) {
 		this.show(parentMenu, 0);
 	}

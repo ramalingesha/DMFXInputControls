@@ -1,6 +1,7 @@
 package com.bt.dm.fx.controls.table.model;
 
 import com.bt.dm.core.model.DMModel;
+import com.bt.dm.core.model.excel.ExcelColumnDataType;
 
 /**
  * @author Ramalingesha ML
@@ -15,6 +16,7 @@ public class DMStaticTableColumnModel implements DMModel {
 	private boolean i18n = true;
 	private String className;
 	private double width = 100;
+	private ExcelColumnDataType dataType;
 
 	public DMStaticTableColumnModel(String columnId, String columnHeader) {
 		this.columnId = columnId;
@@ -33,6 +35,11 @@ public class DMStaticTableColumnModel implements DMModel {
 
 	public DMStaticTableColumnModel width(double width) {
 		this.width = width;
+		return this;
+	}
+	
+	public DMStaticTableColumnModel dataType(ExcelColumnDataType dataType) {
+		this.dataType = dataType;
 		return this;
 	}
 
@@ -54,5 +61,9 @@ public class DMStaticTableColumnModel implements DMModel {
 
 	public double getWidth() {
 		return width;
+	}
+
+	public ExcelColumnDataType getDataType() {
+		return dataType;
 	}
 }

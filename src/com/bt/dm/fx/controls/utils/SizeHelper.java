@@ -19,6 +19,8 @@ public final class SizeHelper {
 	public static ControlSize INPUT_CONTROL_SMALL_SIZE;
 	private static boolean LARGE_SCREEN;
 	public static ControlSize MAIN_PANEL_SIZE;
+	public static ControlSize FORM_PANEL_FULL_VIEW_SIZE;
+	public static ControlSize TABLE_PANEL_FULL_VIEW_SIZE;
 	public static double ERROR_DIALOG_WIDTH;
 	public static double ERROR_DIALOG_HEIGHT;
 	public static double DASHBOARD_TITLE_BAR_HEIGHT;
@@ -46,6 +48,10 @@ public final class SizeHelper {
 		SizeHelper.INPUT_CONTROL_SMALL_SIZE = new ControlSize(SizeHelper.SCREEN_SIZE.getWidth() * 0.07, 30);
 		SizeHelper.MAIN_PANEL_SIZE = new ControlSize(SizeHelper.SCREEN_SIZE.getWidth() - mainPanelWidthOffset,
 				SizeHelper.SCREEN_SIZE.getHeight() - mainPanelHeightOffset);
+		SizeHelper.FORM_PANEL_FULL_VIEW_SIZE = new ControlSize(SizeHelper.SCREEN_SIZE.getWidth() - mainPanelWidthOffset - 15,
+				SizeHelper.SCREEN_SIZE.getHeight() - mainPanelHeightOffset - 10);
+		SizeHelper.TABLE_PANEL_FULL_VIEW_SIZE = new ControlSize(FORM_PANEL_FULL_VIEW_SIZE.getWidth() - 15,
+				FORM_PANEL_FULL_VIEW_SIZE.getHeight() - 110);
 		
 		SizeHelper.ERROR_DIALOG_WIDTH = SizeHelper.SCREEN_SIZE.getWidth() * 0.65;
 		SizeHelper.ERROR_DIALOG_HEIGHT = SizeHelper.SCREEN_SIZE.getHeight() * 0.5;
