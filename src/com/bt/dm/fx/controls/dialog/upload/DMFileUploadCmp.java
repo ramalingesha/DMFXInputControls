@@ -52,6 +52,7 @@ public class DMFileUploadCmp extends Pane {
 		private DMFileUploadEvent fileUploadEvent;
 		private boolean verticalAlign = true;
 		private boolean showfilePath = false;
+		private boolean focusTraversable = true;
 
 		public DMFileUploadCmpBuilder title(String title) {
 			this.title = title;
@@ -84,6 +85,11 @@ public class DMFileUploadCmp extends Pane {
 			this.showfilePath = showfilePath;
 			return this;
 		}
+		
+		public DMFileUploadCmpBuilder focusTraversable(boolean focusTraversable) {
+			this.focusTraversable = focusTraversable;
+			return this;
+		}
 	}
 
 	private DMFileUploadCmpBuilder builder;
@@ -106,7 +112,7 @@ public class DMFileUploadCmp extends Pane {
 		if (this.builder.showfilePath) {
 			this.getChildren().add(this.getUploadPanel());
 		} else {
-			this.getChildren().add(this.getImportButton());
+			this.getChildren().add(this.getImportButton(this.builder.focusTraversable));
 		}
 	}
 
@@ -185,7 +191,7 @@ public class DMFileUploadCmp extends Pane {
 		return pane;
 	}
 
-	private Node getImportButton() {
+	private Node getImportButton(boolean focusTraversable) {
 		FXButtonCmp importButton = new FXButtonCmp(new FXButtonCmpBuilder()
 				.text(this.builder.uploadBtnText != null ? this.builder.uploadBtnText : "milkProducer.form.input.import")
 				.className("styled-accent-button english-font")
@@ -205,6 +211,8 @@ public class DMFileUploadCmp extends Pane {
 						}
 					}
 				}));
+		
+		importButton.setFocusTraversable(focusTraversable);
 
 		return importButton;
 	}

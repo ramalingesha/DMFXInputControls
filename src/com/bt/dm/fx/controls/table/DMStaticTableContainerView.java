@@ -1,6 +1,7 @@
 package com.bt.dm.fx.controls.table;
 
 import java.util.List;
+import java.util.Map;
 
 import com.bt.dm.core.pubsub.PubSubEvent;
 import com.bt.dm.core.pubsub.PubSubEventDataModel;
@@ -173,6 +174,10 @@ public class DMStaticTableContainerView extends DMView {
 		this.createTable();
 		
 		UIHelper.renderCrossTableData(dataModels, staticTableView);
+	}
+	
+	public Map<String, List<Object>> getTableDataObjects() {
+		return this.staticTableView.getTableDataObjects();
 	}
 
 	private void subscribeOnThemeChange(Pane pane) {

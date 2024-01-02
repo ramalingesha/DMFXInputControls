@@ -555,8 +555,8 @@ class FXTable<S extends DMTableModel> extends TableView<S> {
 
 			double width = this.builder.editIconColumnWidth == null ? 0.07 : this.builder.editIconColumnWidth;
 
-			FxTableColumnSizeMapper<S> editColumnSizeMapper = new FxTableColumnSizeMapper<S>(editColumn, 0.05, true,
-					width);
+			FxTableColumnSizeMapper<S> editColumnSizeMapper = new FxTableColumnSizeMapper<S>(editColumn,
+					this.builder.editIconColumnWidth != null ? width : 0.05, true, width);
 			this.builder.columnSizeMapperList.add(editColumnSizeMapper);
 		}
 
