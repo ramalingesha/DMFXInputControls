@@ -219,7 +219,7 @@ public class FXTableView<S extends DMTableModel> extends Pane {
 
 		if (this.builder.fullView) {
 			this.table.setPrefWidth(SizeHelper.TABLE_PANEL_FULL_VIEW_SIZE.getWidth());
-			this.table.setPrefHeight(SizeHelper.TABLE_PANEL_FULL_VIEW_SIZE.getHeight());
+			this.table.setPrefHeight(SizeHelper.TABLE_PANEL_FULL_VIEW_SIZE.getHeight() - 30);
 		} else {
 			if (this.builder.height != null) {
 				this.table.setPrefHeight(this.builder.height);
