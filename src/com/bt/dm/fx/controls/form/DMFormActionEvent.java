@@ -9,6 +9,14 @@ import com.bt.dm.core.model.DMModel;
  */
 public interface DMFormActionEvent {
 	public abstract void onCancelForm();
-	
+
 	public abstract void onSave(DMModel model);
+
+	public default DMModel getNextModel() {
+		return null;
+	};
+	
+	public default DMModel getPrevModel() {
+		return null;
+	};
 }

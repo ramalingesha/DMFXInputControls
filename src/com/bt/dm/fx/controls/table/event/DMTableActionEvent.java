@@ -13,6 +13,8 @@ public interface DMTableActionEvent {
 	public abstract void onDeleteClick(int id);
 
 	public abstract void onEditClick(DMModel model);
+	
+	public default void onEditClick(DMModel model, int selectedRowIndex) {}
 
 	public default void onExpandClick(Event event) {
 

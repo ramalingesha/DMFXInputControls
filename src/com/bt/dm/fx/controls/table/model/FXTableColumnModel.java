@@ -31,6 +31,7 @@ public class FXTableColumnModel<T, V extends Object> extends TableColumn<T, V> {
 	private boolean englishFont;
 	private Double colWidthPercentage;
 	private String className;
+	private boolean sortable = true;
 
 	public FXTableColumnModel(String header, String propertyName) {
 		this(header, propertyName, null);
@@ -62,6 +63,12 @@ public class FXTableColumnModel<T, V extends Object> extends TableColumn<T, V> {
 			TextFormatTypeEnum textFormatType, boolean readFromLocale,
 			boolean englishFont, String className) {
 		this(header, propertyName, textFormatType, readFromLocale, englishFont, className, null);
+	}
+	
+	public FXTableColumnModel<T, V> sortable(boolean sortable) {
+		this.sortable = sortable;
+		
+		return this;
 	}
 	
 	public FXTableColumnModel(String header, String propertyName, TextFormatTypeEnum textFormatType,
@@ -96,6 +103,8 @@ public class FXTableColumnModel<T, V extends Object> extends TableColumn<T, V> {
 		if (className != null) {
 			this.getStyleClass().addAll(className.split(","));
 		}
+		
+		this.setSortable(false);
 
 		if (textFormatType == null) {
 			return;
