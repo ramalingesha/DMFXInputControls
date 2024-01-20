@@ -1,6 +1,14 @@
 .dashboard-title-bar .icon-style {
 	-fx-font-size: 28;
 }
+
+.dashboard-title-bar .cloud-online {
+	-fx-fill: green;
+}
+
+.dashboard-title-bar .cloud-offline {
+	-fx-fill: red;
+}
 .dashboard-title-bar .choice-box {
 	-fx-background-color: transparent;
 	-fx-font-size: 20;

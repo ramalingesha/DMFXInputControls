@@ -8,6 +8,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import com.bt.dm.core.controller.DMCoreServiceController;
@@ -47,6 +48,7 @@ public class DMTitlePanel extends DMView {
 		private String mainTitle;
 		private IconClickEvent minimizeIconClickHandler;
 		private IconClickEvent closeIconClickHandler;
+		private boolean showCloudStatus;
 
 		public DMTitlePanelBuilder subTitle(String subTitle) {
 			this.subTitle = subTitle;
@@ -69,12 +71,19 @@ public class DMTitlePanel extends DMView {
 			this.closeIconClickHandler = closeIconClickHandler;
 			return this;
 		}
+		
+		public DMTitlePanelBuilder showCloudStatus(boolean showCloudStatus) {
+			this.showCloudStatus = showCloudStatus;
+			return this;
+		}
 	}
 
 	private DMTitlePanelBuilder builder;
 	private PubSubEventHandler handler;
 	private FXLabelCmp mainLabelCmp;
 	private DMCoreServiceController coreServiceController;
+	private FXMaterialDesignIcon cloudOnlineIcon;
+	private FXMaterialDesignIcon cloudOfflineIcon;
 
 	public DMTitlePanel(DMTitlePanelBuilder builder) {
 		this.builder = builder;
@@ -112,18 +121,31 @@ public class DMTitlePanel extends DMView {
 		FXMaterialDesignIcon closeIcon = new FXMaterialDesignIcon(
 				closeIconBuilder);
 		FXMaterialDesignIcon helpIcon = new FXMaterialDesignIcon(new FXMaterialDesignIconBuilder(MaterialDesignIcon.HELP_CIRCLE));
-		FXMaterialDesignIcon cloudOfflineIcon = new FXMaterialDesignIcon(new FXMaterialDesignIconBuilder(MaterialDesignIcon.CLOUD_CHECK));
-
+		
 		minimizeIcon.getStyleClass().add("icon-style");
 		closeIcon.getStyleClass().add("icon-style");
 		helpIcon.getStyleClass().add("icon-style");
-		cloudOfflineIcon.getStyleClass().add("icon-style");
 		
 		HBox box = new HBox();
 		box.setAlignment(Pos.CENTER_LEFT);
 		
-		box.getChildren().addAll(this.getColorPickerBox(), cloudOfflineIcon, helpIcon, minimizeIcon, closeIcon);
-
+		box.getChildren().addAll(this.getColorPickerBox(), helpIcon, minimizeIcon, closeIcon);
+		
+		if(builder.showCloudStatus) {
+			cloudOnlineIcon = new FXMaterialDesignIcon(
+					new FXMaterialDesignIconBuilder(MaterialDesignIcon.CLOUD_CHECK));
+			cloudOfflineIcon = new FXMaterialDesignIcon(
+					new FXMaterialDesignIconBuilder(
+							MaterialDesignIcon.CLOUD_OUTLINE_OFF));
+			
+			cloudOnlineIcon.getStyleClass().add("icon-style");
+			cloudOfflineIcon.getStyleClass().add("cloud-offline");
+			
+			this.showCloudOnlineStatus(false);
+			
+			box.getChildren().addAll(1, Arrays.asList(cloudOnlineIcon, cloudOfflineIcon));
+		}
+		
 		BorderPane borderPane = new BorderPane();
 		borderPane.setPadding(new Insets(5));
 
@@ -148,6 +170,11 @@ public class DMTitlePanel extends DMView {
 		subscribeOnMainTitleChange();
 
 		return borderPane;
+	}
+	
+	public void showCloudOnlineStatus(boolean online) {
+		this.cloudOnlineIcon.setVisible(online);
+		this.cloudOfflineIcon.setVisible(!online);
 	}
 
 	private void subscribeOnMainTitleChange() {
